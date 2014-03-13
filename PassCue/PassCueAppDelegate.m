@@ -7,6 +7,7 @@
 //
 
 #import "PassCueAppDelegate.h"
+#import "MainViewController.h"
 
 @implementation PassCueAppDelegate
 
@@ -16,6 +17,11 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    MainViewController *mainScreen = [[MainViewController alloc] init];
+    self.navigationController = [[UINavigationController alloc]initWithRootViewController:mainScreen];
+    [self.window setRootViewController:self.navigationController];
+    
     return YES;
 }
 

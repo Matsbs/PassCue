@@ -19,6 +19,14 @@
 		4E5F9E4B18D1B17E001A4FD2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E5F9E3318D1B17E001A4FD2 /* UIKit.framework */; };
 		4E5F9E5318D1B17E001A4FD2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E5F9E5118D1B17E001A4FD2 /* InfoPlist.strings */; };
 		4E5F9E5518D1B17E001A4FD2 /* PassCueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E5418D1B17E001A4FD2 /* PassCueTests.m */; };
+		4E5F9E7918D1B57D001A4FD2 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E6E18D1B57D001A4FD2 /* DBManager.m */; };
+		4E5F9E7A18D1B57D001A4FD2 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E7018D1B57D001A4FD2 /* MainViewController.m */; };
+		4E5F9E7D18D1B57D001A4FD2 /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E7618D1B57D001A4FD2 /* Task.m */; };
+		4E5F9E7E18D1B57D001A4FD2 /* ViewAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E7818D1B57D001A4FD2 /* ViewAccountController.m */; };
+		4E5F9E8018D1B603001A4FD2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */; };
+		4E5F9E8318D1B82E001A4FD2 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E8218D1B82E001A4FD2 /* Account.m */; };
+		4E5F9E8618D1DE26001A4FD2 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E5F9E8518D1DE26001A4FD2 /* 1.png */; };
+		4E5F9E8818D1E270001A4FD2 /* mats.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E5F9E8718D1E270001A4FD2 /* mats.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +56,19 @@
 		4E5F9E5018D1B17E001A4FD2 /* PassCueTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PassCueTests-Info.plist"; sourceTree = "<group>"; };
 		4E5F9E5218D1B17E001A4FD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4E5F9E5418D1B17E001A4FD2 /* PassCueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PassCueTests.m; sourceTree = "<group>"; };
+		4E5F9E6D18D1B57D001A4FD2 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
+		4E5F9E6E18D1B57D001A4FD2 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
+		4E5F9E6F18D1B57D001A4FD2 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		4E5F9E7018D1B57D001A4FD2 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		4E5F9E7518D1B57D001A4FD2 /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
+		4E5F9E7618D1B57D001A4FD2 /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
+		4E5F9E7718D1B57D001A4FD2 /* ViewAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAccountController.h; sourceTree = "<group>"; };
+		4E5F9E7818D1B57D001A4FD2 /* ViewAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewAccountController.m; sourceTree = "<group>"; };
+		4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		4E5F9E8118D1B82E001A4FD2 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
+		4E5F9E8218D1B82E001A4FD2 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		4E5F9E8518D1DE26001A4FD2 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1.png; path = ../../MobileApps4Tourism/images/1.png; sourceTree = "<group>"; };
+		4E5F9E8718D1E270001A4FD2 /* mats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mats.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E5F9E8018D1B603001A4FD2 /* libsqlite3.0.dylib in Frameworks */,
 				4E5F9E3218D1B17E001A4FD2 /* CoreGraphics.framework in Frameworks */,
 				4E5F9E3418D1B17E001A4FD2 /* UIKit.framework in Frameworks */,
 				4E5F9E3018D1B17E001A4FD2 /* Foundation.framework in Frameworks */,
@@ -96,6 +118,7 @@
 		4E5F9E2E18D1B17E001A4FD2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */,
 				4E5F9E2F18D1B17E001A4FD2 /* Foundation.framework */,
 				4E5F9E3118D1B17E001A4FD2 /* CoreGraphics.framework */,
 				4E5F9E3318D1B17E001A4FD2 /* UIKit.framework */,
@@ -107,6 +130,17 @@
 		4E5F9E3518D1B17E001A4FD2 /* PassCue */ = {
 			isa = PBXGroup;
 			children = (
+				4E5F9E8418D1DE01001A4FD2 /* images */,
+				4E5F9E6D18D1B57D001A4FD2 /* DBManager.h */,
+				4E5F9E6E18D1B57D001A4FD2 /* DBManager.m */,
+				4E5F9E6F18D1B57D001A4FD2 /* MainViewController.h */,
+				4E5F9E7018D1B57D001A4FD2 /* MainViewController.m */,
+				4E5F9E7518D1B57D001A4FD2 /* Task.h */,
+				4E5F9E7618D1B57D001A4FD2 /* Task.m */,
+				4E5F9E8118D1B82E001A4FD2 /* Account.h */,
+				4E5F9E8218D1B82E001A4FD2 /* Account.m */,
+				4E5F9E7718D1B57D001A4FD2 /* ViewAccountController.h */,
+				4E5F9E7818D1B57D001A4FD2 /* ViewAccountController.m */,
 				4E5F9E3E18D1B17E001A4FD2 /* PassCueAppDelegate.h */,
 				4E5F9E3F18D1B17E001A4FD2 /* PassCueAppDelegate.m */,
 				4E5F9E4118D1B17E001A4FD2 /* Images.xcassets */,
@@ -142,6 +176,15 @@
 				4E5F9E5118D1B17E001A4FD2 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4E5F9E8418D1DE01001A4FD2 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				4E5F9E8718D1E270001A4FD2 /* mats.png */,
+				4E5F9E8518D1DE26001A4FD2 /* 1.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +263,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E5F9E8818D1E270001A4FD2 /* mats.png in Resources */,
+				4E5F9E8618D1DE26001A4FD2 /* 1.png in Resources */,
 				4E5F9E3A18D1B17E001A4FD2 /* InfoPlist.strings in Resources */,
 				4E5F9E4218D1B17E001A4FD2 /* Images.xcassets in Resources */,
 			);
@@ -240,8 +285,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E5F9E8318D1B82E001A4FD2 /* Account.m in Sources */,
+				4E5F9E7D18D1B57D001A4FD2 /* Task.m in Sources */,
+				4E5F9E7E18D1B57D001A4FD2 /* ViewAccountController.m in Sources */,
+				4E5F9E7918D1B57D001A4FD2 /* DBManager.m in Sources */,
 				4E5F9E3C18D1B17E001A4FD2 /* main.m in Sources */,
 				4E5F9E4018D1B17E001A4FD2 /* PassCueAppDelegate.m in Sources */,
+				4E5F9E7A18D1B57D001A4FD2 /* MainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
