@@ -11,9 +11,9 @@
 @interface Account : NSObject
 
 @property (nonatomic, retain) NSString *name;
-@property int account_id;
-@property int sharing_id;
-@property int rehearsal_schedule_id; //Put as array of nstime?
-@property bool initialized;
+@property int sharingSetID;
+@property (nonatomic, retain) NSString *rehearsal_time; //NSMutableArray of NSTime?
+@property bool isInitialized;
+@property int accountID;
 
 @end

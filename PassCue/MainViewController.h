@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ViewAccountController.h"
+#import "InitAccountController.h"
 #import "DBManager.h"
+#import "Object.h"
+#import "Association.h"
+#import "Cue.h"
 #import "Account.h"
+#import "SharingSet.h"
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 

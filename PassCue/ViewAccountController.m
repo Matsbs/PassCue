@@ -23,7 +23,6 @@
     self.title = @"View Account";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"1.png"]];
     self.imageView.frame = CGRectMake(40, 100, 100, 100);
     [self.view addSubview:self.imageView];
@@ -53,7 +52,7 @@
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mats.png"]];
-    self.imageView.frame = CGRectMake(160, 460, 100, 100);
+    self.imageView.frame = CGRectMake(160, 660, 100, 100);
     [self.view addSubview:self.imageView];
     
 }
