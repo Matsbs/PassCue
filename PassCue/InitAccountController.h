@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Account.h"
 #import "DBManager.h"
+#import "InitPAOController.h"
 
 @class InitAccountController;
 

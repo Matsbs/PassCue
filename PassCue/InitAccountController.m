@@ -25,8 +25,8 @@
     self.dbManager = [[DBManager alloc]init];
     [self.dbManager setDbPath];
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveClicked:)] ;
-    self.navigationItem.rightBarButtonItem = doneButton;
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(nextClicked:)] ;
+    self.navigationItem.rightBarButtonItem = nextButton;
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
     self.navigationItem.leftBarButtonItem = cancelButton;
@@ -50,12 +50,13 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-- (IBAction)saveClicked:(id)sender {
+- (IBAction)nextClicked:(id)sender {
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
     [self.dbManager insertAccount:newAccount];
     [self.delegate reloadTableData:self];
-    [self.navigationController popViewControllerAnimated:YES];
+    InitPAOController *paoView = [[InitPAOController alloc]init];
+    [self.navigationController pushViewController:paoView animated:YES];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

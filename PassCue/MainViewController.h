@@ -15,6 +15,7 @@
 #import "Cue.h"
 #import "Account.h"
 #import "SharingSet.h"
+#import "ImagePickerViewController.h"
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, InitAccountControllerDelegate>
 

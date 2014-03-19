@@ -47,33 +47,36 @@
     Object *newObject = [self.dbManager getObjectByID:1];
     NSLog(@"Object id %d name %@ and image %@", newObject.objectID, newObject.name, newObject.image_path);
     
-    NSLog(@"Size of actions %lu", [self.dbManager getAllActions].count);
+    NSLog(@"Size of actions %d", [self.dbManager getAllActions].count);
     
-    NSLog(@"Size of objects %lu", [self.dbManager getAllObjects].count);
+    NSLog(@"Size of objects %d", [self.dbManager getAllObjects].count);
     
     Association *newAssociation = [self.dbManager getAssociationByID:1];
     NSLog(@"Association id:%d action:%@ and object:%@", newAssociation.associationID, newAssociation.action, newAssociation.object);
     
-    NSLog(@"Size of associations %lu", [self.dbManager getAllAssociations].count);
+    NSLog(@"Size of associations %d", [self.dbManager getAllAssociations].count);
     
     Cue *newCue = [self.dbManager getCueByID:1];
     NSLog(@"Cue id:%d person:%@, image:%@ and associationID:%d", newCue.cueID, newCue.person, newCue.image_path, newCue.associationID);
     
-    NSLog(@"Size of cues %lu", [self.dbManager getAllCues].count);
+    NSLog(@"Size of cues %d", [self.dbManager getAllCues].count);
     
     Account *newAccount = [self.dbManager getAccountByID:1];
     NSLog(@"Account id:%d name:%@, sharing set:%d, rehearsal time:%@ and isInit:%d", newAccount.accountID, newAccount.name, newAccount.sharingSetID, newAccount.rehearsal_time, newAccount.isInitialized);
     
-    NSLog(@"Size of account %lu", [self.dbManager getAllAccounts].count);
+    NSLog(@"Size of account %d", [self.dbManager getAllAccounts].count);
     
     SharingSet *newSharingSet = [self.dbManager getSharingSetByID:1];
     NSLog(@"Sharing set id:%d, cue1:%d, cue2:%d, cue3:%d, cue4:%d", newSharingSet.sharingSetID, newSharingSet.cue1ID, newSharingSet.cue2ID, newSharingSet.cue3ID, newSharingSet.cue4ID);
 }
 
 - (IBAction)newClicked:(id)sender {
-    InitAccountController *newAccount = [[InitAccountController alloc] init];
-    newAccount.delegate = self;
-    [self.navigationController pushViewController:newAccount animated:YES];
+    ImagePickerViewController *test = [[ImagePickerViewController alloc]init];
+    [self.navigationController pushViewController:test animated:YES];
+    
+//    InitAccountController *newAccount = [[InitAccountController alloc] init];
+//    newAccount.delegate = self;
+//    [self.navigationController pushViewController:newAccount animated:YES];
 }
 
 - (void)populateDB{
@@ -142,16 +145,16 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.account= [self.accounts objectAtIndex:indexPath.row];
     if (!self.editing) {
-        if (self.account.isInitialized) {
+        //if (self.account.isInitialized) {
             ViewAccountController *viewAccount = [[ViewAccountController alloc] init];
             //viewTask.delegate = self;
             //viewTask.taskID = [[self.tasks objectAtIndex:indexPath.row] taskID];
             [self.navigationController pushViewController:viewAccount animated:YES];
-        }else{
-            InitAccountController *initAccount = [[InitAccountController alloc] init];
-            UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:initAccount];
-            [self.navigationController presentViewController:navigationController animated:YES completion:NULL];
-        }
+//        }else{
+//            InitAccountController *initAccount = [[InitAccountController alloc] init];
+//            UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:initAccount];
+//            [self.navigationController presentViewController:navigationController animated:YES completion:NULL];
+//        }
     }
 }
 

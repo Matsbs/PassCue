@@ -33,6 +33,10 @@
 		4E64C85418D6F30400B52495 /* Association.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85318D6F30400B52495 /* Association.m */; };
 		4E64C85718D6F4E100B52495 /* Cue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85618D6F4E100B52495 /* Cue.m */; };
 		4E64C85A18D6F8E000B52495 /* SharingSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85918D6F8E000B52495 /* SharingSet.m */; };
+		4ECD12F518D9CB0700E7AD33 /* InitPAOController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD12F418D9CB0700E7AD33 /* InitPAOController.m */; };
+		4ECD12FC18D9D02C00E7AD33 /* banana.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECD12FA18D9D02C00E7AD33 /* banana.png */; };
+		4ECD12FD18D9D02C00E7AD33 /* kick.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECD12FB18D9D02C00E7AD33 /* kick.png */; };
+		4ECD130018D9DB0D00E7AD33 /* ImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD12FF18D9DB0D00E7AD33 /* ImagePickerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +91,12 @@
 		4E64C85618D6F4E100B52495 /* Cue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cue.m; sourceTree = "<group>"; };
 		4E64C85818D6F8E000B52495 /* SharingSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingSet.h; sourceTree = "<group>"; };
 		4E64C85918D6F8E000B52495 /* SharingSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingSet.m; sourceTree = "<group>"; };
+		4ECD12F318D9CB0700E7AD33 /* InitPAOController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitPAOController.h; sourceTree = "<group>"; };
+		4ECD12F418D9CB0700E7AD33 /* InitPAOController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitPAOController.m; sourceTree = "<group>"; };
+		4ECD12FA18D9D02C00E7AD33 /* banana.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banana.png; sourceTree = "<group>"; };
+		4ECD12FB18D9D02C00E7AD33 /* kick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kick.png; sourceTree = "<group>"; };
+		4ECD12FE18D9DB0D00E7AD33 /* ImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerViewController.h; sourceTree = "<group>"; };
+		4ECD12FF18D9DB0D00E7AD33 /* ImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,8 +179,12 @@
 				4E5F9E8218D1B82E001A4FD2 /* Account.m */,
 				4E5F9E7718D1B57D001A4FD2 /* ViewAccountController.h */,
 				4E5F9E7818D1B57D001A4FD2 /* ViewAccountController.m */,
+				4ECD12F318D9CB0700E7AD33 /* InitPAOController.h */,
+				4ECD12F418D9CB0700E7AD33 /* InitPAOController.m */,
 				4E0BD3C818D1F39E00E6E545 /* InitAccountController.h */,
 				4E0BD3C918D1F39E00E6E545 /* InitAccountController.m */,
+				4ECD12FE18D9DB0D00E7AD33 /* ImagePickerViewController.h */,
+				4ECD12FF18D9DB0D00E7AD33 /* ImagePickerViewController.m */,
 				4E5F9E3E18D1B17E001A4FD2 /* PassCueAppDelegate.h */,
 				4E5F9E3F18D1B17E001A4FD2 /* PassCueAppDelegate.m */,
 				4E5F9E4118D1B17E001A4FD2 /* Images.xcassets */,
@@ -211,6 +225,8 @@
 		4E5F9E8418D1DE01001A4FD2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4ECD12FA18D9D02C00E7AD33 /* banana.png */,
+				4ECD12FB18D9D02C00E7AD33 /* kick.png */,
 				4E5F9E8718D1E270001A4FD2 /* mats.png */,
 				4E5F9E8518D1DE26001A4FD2 /* 1.png */,
 			);
@@ -297,6 +313,8 @@
 				4E5F9E8618D1DE26001A4FD2 /* 1.png in Resources */,
 				4E5F9E3A18D1B17E001A4FD2 /* InfoPlist.strings in Resources */,
 				4E5F9E4218D1B17E001A4FD2 /* Images.xcassets in Resources */,
+				4ECD12FC18D9D02C00E7AD33 /* banana.png in Resources */,
+				4ECD12FD18D9D02C00E7AD33 /* kick.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +335,7 @@
 			files = (
 				4E5F9E8318D1B82E001A4FD2 /* Account.m in Sources */,
 				4E5F9E7D18D1B57D001A4FD2 /* Task.m in Sources */,
+				4ECD12F518D9CB0700E7AD33 /* InitPAOController.m in Sources */,
 				4E5F9E7E18D1B57D001A4FD2 /* ViewAccountController.m in Sources */,
 				4E5F9E7918D1B57D001A4FD2 /* DBManager.m in Sources */,
 				4E5F9E3C18D1B17E001A4FD2 /* main.m in Sources */,
@@ -327,6 +346,7 @@
 				4E64C85118D6F11100B52495 /* Action.m in Sources */,
 				4E64C85718D6F4E100B52495 /* Cue.m in Sources */,
 				4E5F9E7A18D1B57D001A4FD2 /* MainViewController.m in Sources */,
+				4ECD130018D9DB0D00E7AD33 /* ImagePickerViewController.m in Sources */,
 				4E0BD3CA18D1F39E00E6E545 /* InitAccountController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
