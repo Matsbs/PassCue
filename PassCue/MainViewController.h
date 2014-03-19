@@ -16,7 +16,7 @@
 #import "Account.h"
 #import "SharingSet.h"
 
-@interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, InitAccountControllerDelegate>
 
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) NSMutableArray *accounts;

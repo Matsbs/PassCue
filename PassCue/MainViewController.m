@@ -35,7 +35,8 @@
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
     
-    NSLog(@"size %lo", [self.accounts count]);
+   UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newClicked:)] ;
+    self.navigationItem.rightBarButtonItem = newButton;
     if (self.accounts.count > 0) {
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     }
@@ -69,6 +70,12 @@
     NSLog(@"Sharing set id:%d, cue1:%d, cue2:%d, cue3:%d, cue4:%d", newSharingSet.sharingSetID, newSharingSet.cue1ID, newSharingSet.cue2ID, newSharingSet.cue3ID, newSharingSet.cue4ID);
 }
 
+- (IBAction)newClicked:(id)sender {
+    InitAccountController *newAccount = [[InitAccountController alloc] init];
+    newAccount.delegate = self;
+    [self.navigationController pushViewController:newAccount animated:YES];
+}
+
 - (void)populateDB{
     Action *newAction = [[Action alloc]init];
     newAction.name = @"Kicking";
@@ -99,6 +106,14 @@
     newAccount.rehearsal_time = @"12:00 13:00 14:00";
     newAccount.isInitialized = NO;
     [self.dbManager insertAccount:newAccount];
+}
+
+- (void)reloadTableData:(InitAccountController *)controller{
+    self.accounts = [self.dbManager getAllAccounts];
+    if (self.accounts.count > 0) {
+        self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    }
+    [self.tableView reloadData];
 }
 
 //Table functions

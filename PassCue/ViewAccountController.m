@@ -55,7 +55,13 @@
     self.imageView.frame = CGRectMake(160, 660, 100, 100);
     [self.view addSubview:self.imageView];
     
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    
 }
 
+- (IBAction)cancelClicked:(id)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 
 @end
