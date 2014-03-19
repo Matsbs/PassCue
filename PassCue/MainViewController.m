@@ -71,12 +71,9 @@
 }
 
 - (IBAction)newClicked:(id)sender {
-    ImagePickerViewController *test = [[ImagePickerViewController alloc]init];
-    [self.navigationController pushViewController:test animated:YES];
-    
-//    InitAccountController *newAccount = [[InitAccountController alloc] init];
-//    newAccount.delegate = self;
-//    [self.navigationController pushViewController:newAccount animated:YES];
+    InitAccountController *newAccount = [[InitAccountController alloc] init];
+    newAccount.delegate = self;
+    [self.navigationController pushViewController:newAccount animated:YES];
 }
 
 - (void)populateDB{
