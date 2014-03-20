@@ -53,9 +53,15 @@
 - (IBAction)nextClicked:(id)sender {
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
-    [self.dbManager insertAccount:newAccount];
+    //Get sharingID
+    newAccount.sharingSetID = 1;
+    //
+    newAccount.isInitialized = NO;
+    newAccount.accountID = [self.dbManager insertAccount:newAccount];
     [self.delegate reloadTableData:self];
     InitPAOController *paoView = [[InitPAOController alloc]init];
+    paoView.paoNr = 1;
+    paoView.accountID = newAccount.accountID;
     [self.navigationController pushViewController:paoView animated:YES];
 }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4E0BD3CA18D1F39E00E6E545 /* InitAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E0BD3C918D1F39E00E6E545 /* InitAccountController.m */; };
+		4E33B6AE18DB0670003DE18B /* dots.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E33B6AD18DB0670003DE18B /* dots.png */; };
 		4E5F9E3018D1B17E001A4FD2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E5F9E2F18D1B17E001A4FD2 /* Foundation.framework */; };
 		4E5F9E3218D1B17E001A4FD2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E5F9E3118D1B17E001A4FD2 /* CoreGraphics.framework */; };
 		4E5F9E3418D1B17E001A4FD2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E5F9E3318D1B17E001A4FD2 /* UIKit.framework */; };
@@ -52,6 +53,8 @@
 /* Begin PBXFileReference section */
 		4E0BD3C818D1F39E00E6E545 /* InitAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitAccountController.h; sourceTree = "<group>"; };
 		4E0BD3C918D1F39E00E6E545 /* InitAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitAccountController.m; sourceTree = "<group>"; };
+		4E33B6AB18DB0636003DE18B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		4E33B6AD18DB0670003DE18B /* dots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots.png; sourceTree = "<group>"; };
 		4E5F9E2C18D1B17E001A4FD2 /* PassCue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PassCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E5F9E2F18D1B17E001A4FD2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4E5F9E3118D1B17E001A4FD2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -146,6 +149,7 @@
 		4E5F9E2E18D1B17E001A4FD2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E33B6AB18DB0636003DE18B /* QuartzCore.framework */,
 				4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */,
 				4E5F9E2F18D1B17E001A4FD2 /* Foundation.framework */,
 				4E5F9E3118D1B17E001A4FD2 /* CoreGraphics.framework */,
@@ -225,6 +229,7 @@
 		4E5F9E8418D1DE01001A4FD2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4E33B6AD18DB0670003DE18B /* dots.png */,
 				4ECD12FA18D9D02C00E7AD33 /* banana.png */,
 				4ECD12FB18D9D02C00E7AD33 /* kick.png */,
 				4E5F9E8718D1E270001A4FD2 /* mats.png */,
@@ -313,6 +318,7 @@
 				4E5F9E8618D1DE26001A4FD2 /* 1.png in Resources */,
 				4E5F9E3A18D1B17E001A4FD2 /* InfoPlist.strings in Resources */,
 				4E5F9E4218D1B17E001A4FD2 /* Images.xcassets in Resources */,
+				4E33B6AE18DB0670003DE18B /* dots.png in Resources */,
 				4ECD12FC18D9D02C00E7AD33 /* banana.png in Resources */,
 				4ECD12FD18D9D02C00E7AD33 /* kick.png in Resources */,
 			);

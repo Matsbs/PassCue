@@ -29,8 +29,8 @@
 - (int)insertCue:(Cue *)cue;
 - (int)insertAccount:(Account *)account;
 - (int)insertSharingSet:(SharingSet *)sharingSet;
-- (Action*)getActionByID:(int)actionID;
-- (Object*)getObjectByID:(int)objectID;
+- (Action*)getActionByName:(NSString *)actionName;
+- (Object*)getObjectByName:(NSString *)objectName;
 - (NSMutableArray*)getAllActions;
 - (NSMutableArray*)getAllObjects;
 - (Association*)getAssociationByID:(int)associationID;

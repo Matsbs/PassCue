@@ -175,12 +175,12 @@
     return (int)sqlite3_last_insert_rowid(_PassCueDB);
 }
 
-- (Action*)getActionByID:(int)actionID{
+- (Action*)getActionByName:(NSString *)actionName{
     Action *action = [[Action alloc] init];
     sqlite3_stmt *statement;
     const char *dbpath = [_databasePath UTF8String];
     if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM ACTIONS WHERE ID = (\"%d\")",actionID];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM ACTIONS WHERE NAME = (\"%@\")",actionName];
         const char *query_stmt = [querySQL UTF8String];
         sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
         if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
@@ -196,12 +196,12 @@
     return action;    
 }
 
-- (Object*)getObjectByID:(int)objectID{
+- (Object*)getObjectByName:(NSString *)objectName{
     Object *object = [[Object alloc] init];
     sqlite3_stmt *statement;
     const char *dbpath = [_databasePath UTF8String];
     if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM OBJECTS WHERE ID = (\"%d\")",objectID];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM OBJECTS WHERE NAME = (\"%@\")",objectName];
         const char *query_stmt = [querySQL UTF8String];
         sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
         if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){

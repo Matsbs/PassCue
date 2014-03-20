@@ -17,6 +17,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ( ![userDefaults valueForKey:@"version"] ){
+        // CALL your Function;
+        NSString *alertTitle = [[NSString alloc] init];
+        alertTitle = [NSString stringWithFormat:@"You must now select 18 pictures from your library. 9 pictures of a background type image and 9 pictures of persons."];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc] init];
+        imagePicker.imageNr = 1;
+        [self.navigationController pushViewController:imagePicker animated:YES];
+        // Adding version number to NSUserDefaults for first version:
+        [userDefaults setFloat:[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] floatValue] forKey:@"version"];
+    }
+    if ([[NSUserDefaults standardUserDefaults] floatForKey:@"version"] == [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] floatValue] ){
+        /// Same Version so dont run the function
+    }else{
+        // Call Your Function;
+        // Update version number to NSUserDefaults for other versions:
+        [userDefaults setFloat:[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] floatValue] forKey:@"version"];
+    }
+    
+    NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
+    
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
@@ -41,57 +64,58 @@
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     }
     
-    Action *newAction = [self.dbManager getActionByID:1];
-    NSLog(@"Action id %d name %@ and image %@", newAction.actionID, newAction.name, newAction.image_path);
-    
-    Object *newObject = [self.dbManager getObjectByID:1];
-    NSLog(@"Object id %d name %@ and image %@", newObject.objectID, newObject.name, newObject.image_path);
-    
-    NSLog(@"Size of actions %d", [self.dbManager getAllActions].count);
-    
-    NSLog(@"Size of objects %d", [self.dbManager getAllObjects].count);
-    
-    Association *newAssociation = [self.dbManager getAssociationByID:1];
-    NSLog(@"Association id:%d action:%@ and object:%@", newAssociation.associationID, newAssociation.action, newAssociation.object);
-    
-    NSLog(@"Size of associations %d", [self.dbManager getAllAssociations].count);
-    
-    Cue *newCue = [self.dbManager getCueByID:1];
-    NSLog(@"Cue id:%d person:%@, image:%@ and associationID:%d", newCue.cueID, newCue.person, newCue.image_path, newCue.associationID);
-    
-    NSLog(@"Size of cues %d", [self.dbManager getAllCues].count);
-    
-    Account *newAccount = [self.dbManager getAccountByID:1];
-    NSLog(@"Account id:%d name:%@, sharing set:%d, rehearsal time:%@ and isInit:%d", newAccount.accountID, newAccount.name, newAccount.sharingSetID, newAccount.rehearsal_time, newAccount.isInitialized);
-    
-    NSLog(@"Size of account %d", [self.dbManager getAllAccounts].count);
-    
-    SharingSet *newSharingSet = [self.dbManager getSharingSetByID:1];
-    NSLog(@"Sharing set id:%d, cue1:%d, cue2:%d, cue3:%d, cue4:%d", newSharingSet.sharingSetID, newSharingSet.cue1ID, newSharingSet.cue2ID, newSharingSet.cue3ID, newSharingSet.cue4ID);
+//    Action *newAction = [self.dbManager getActionByID:1];
+//    NSLog(@"Action id %d name %@ and image %@", newAction.actionID, newAction.name, newAction.image_path);
+//    
+//    Object *newObject = [self.dbManager getObjectByID:1];
+//    NSLog(@"Object id %d name %@ and image %@", newObject.objectID, newObject.name, newObject.image_path);
+//    
+//    NSLog(@"Size of actions %d", [self.dbManager getAllActions].count);
+//    
+//    NSLog(@"Size of objects %d", [self.dbManager getAllObjects].count);
+//    
+//    Association *newAssociation = [self.dbManager getAssociationByID:1];
+//    NSLog(@"Association id:%d action:%@ and object:%@", newAssociation.associationID, newAssociation.action, newAssociation.object);
+//    
+//    NSLog(@"Size of associations %d", [self.dbManager getAllAssociations].count);
+//    
+//    Cue *newCue = [self.dbManager getCueByID:1];
+//    NSLog(@"Cue id:%d person:%@, image:%@ and associationID:%d", newCue.cueID, newCue.person, newCue.image_path, newCue.associationID);
+//    
+//    NSLog(@"Size of cues %d", [self.dbManager getAllCues].count);
+//    
+//    Account *newAccount = [self.dbManager getAccountByID:1];
+//    NSLog(@"Account id:%d name:%@, sharing set:%d, rehearsal time:%@ and isInit:%d", newAccount.accountID, newAccount.name, newAccount.sharingSetID, newAccount.rehearsal_time, newAccount.isInitialized);
+//    
+//    NSLog(@"Size of account %d", [self.dbManager getAllAccounts].count);
+//    
+//    SharingSet *newSharingSet = [self.dbManager getSharingSetByID:1];
+//    NSLog(@"Sharing set id:%d, cue1:%d, cue2:%d, cue3:%d, cue4:%d", newSharingSet.sharingSetID, newSharingSet.cue1ID, newSharingSet.cue2ID, newSharingSet.cue3ID, newSharingSet.cue4ID);
 }
 
 - (IBAction)newClicked:(id)sender {
     InitAccountController *newAccount = [[InitAccountController alloc] init];
     newAccount.delegate = self;
+    self.editing = NO;
     [self.navigationController pushViewController:newAccount animated:YES];
 }
 
 - (void)populateDB{
     Action *newAction = [[Action alloc]init];
     newAction.name = @"Kicking";
-    newAction.image_path = @"image.png";
+    newAction.image_path = @"kick.png";
     [self.dbManager insertAction:newAction];
     Object *newObject = [[Object alloc]init];
     newObject.name = @"Banana";
-    newObject.image_path = @"image.png";
+    newObject.image_path = @"banana.png";
     [self.dbManager insertObject:newObject];
     Association *newAssociation = [[Association alloc]init];
     newAssociation.action = @"Kicking";
     newAssociation.object = @"Banana";
     [self.dbManager insertAssociation:newAssociation];
     Cue *newCue = [[Cue alloc] init];
-    newCue.person = @"person.png";
-    newCue.image_path = @"image.png";
+    newCue.person = @"mats.png";
+    newCue.image_path = @"1.png";
     newCue.associationID = 1;
     [self.dbManager insertCue:newCue];
     SharingSet *newSharingSet = [[SharingSet alloc]init];
@@ -100,12 +124,6 @@
     newSharingSet.cue3ID = 1;
     newSharingSet.cue4ID = 1;
     [self.dbManager insertSharingSet:newSharingSet];
-    Account *newAccount = [[Account alloc] init];
-    newAccount.name = @"Paypal";
-    newAccount.sharingSetID = 0;
-    newAccount.rehearsal_time = @"12:00 13:00 14:00";
-    newAccount.isInitialized = NO;
-    [self.dbManager insertAccount:newAccount];
 }
 
 - (void)reloadTableData:(InitAccountController *)controller{
@@ -144,6 +162,7 @@
     if (!self.editing) {
         //if (self.account.isInitialized) {
             ViewAccountController *viewAccount = [[ViewAccountController alloc] init];
+            viewAccount.accountID = [[self.accounts objectAtIndex:indexPath.row] accountID];
             //viewTask.delegate = self;
             //viewTask.taskID = [[self.tasks objectAtIndex:indexPath.row] taskID];
             [self.navigationController pushViewController:viewAccount animated:YES];
