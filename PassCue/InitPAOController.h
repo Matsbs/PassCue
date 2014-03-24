@@ -24,6 +24,8 @@
 @property (nonatomic, retain) Association *association;
 @property (nonatomic, retain) Action *action;
 @property (nonatomic, retain) Object *object;
+@property (nonatomic, retain) UILabel *actionLabel;
+@property (nonatomic, retain) UILabel *objectLabel;
 @property int paoNr;
 @property int accountID;
 

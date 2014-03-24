@@ -17,15 +17,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.dbManager = [[DBManager alloc]init];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ( ![userDefaults valueForKey:@"version"] ){
         // CALL your Function;
+        
+        
+        [self.dbManager initDatabase];
+        [self populateDB];
+        [self generateSharingSet];
+        
         NSString *alertTitle = [[NSString alloc] init];
-        alertTitle = [NSString stringWithFormat:@"You must now select 18 pictures from your library. 9 pictures of a background type image and 9 pictures of persons."];
+        alertTitle = [NSString stringWithFormat:@"You must select 9 cues. Each of the cues must consist of one background image and one person image."];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc] init];
-        imagePicker.imageNr = 1;
+        imagePicker.cueNr = 1;
         [self.navigationController pushViewController:imagePicker animated:YES];
         // Adding version number to NSUserDefaults for first version:
         [userDefaults setFloat:[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] floatValue] forKey:@"version"];
@@ -44,11 +51,8 @@
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     self.accounts = [[NSMutableArray alloc] init];
-    
-    self.dbManager = [[DBManager alloc]init];
-    [self.dbManager initDatabase];
-    
-    [self populateDB];
+
+    [self.dbManager setDbPath];
     self.accounts = [self.dbManager getAllAccounts];
     
     self.title = @"Accounts";
@@ -98,6 +102,8 @@
     newAccount.delegate = self;
     self.editing = NO;
     [self.navigationController pushViewController:newAccount animated:YES];
+//    ImagePickerViewController *test = [[ImagePickerViewController alloc] init];
+//    [self.navigationController pushViewController:test animated:YES];   
 }
 
 - (void)populateDB{
@@ -118,12 +124,26 @@
     newCue.image_path = @"1.png";
     newCue.associationID = 1;
     [self.dbManager insertCue:newCue];
-    SharingSet *newSharingSet = [[SharingSet alloc]init];
-    newSharingSet.cue1ID = 1;
-    newSharingSet.cue2ID = 1;
-    newSharingSet.cue3ID = 1;
-    newSharingSet.cue4ID = 1;
-    [self.dbManager insertSharingSet:newSharingSet];
+}
+
+- (void)generateSharingSet{
+    int i,j,k,l;
+    int length = 10;
+    for (i = 1; i < length-3; i++) {
+        for (j = i+1; j < length-2; j++) {
+            for (k = j+1; k < length-1; k++) {
+                for (l = k+1; l < length; l++) {
+                    NSLog(@"%d %d %d %d",i,j,k,l);
+                    SharingSet *newSharingSet = [[SharingSet alloc]init];
+                    newSharingSet.cue1ID = i;
+                    newSharingSet.cue2ID = j;
+                    newSharingSet.cue3ID = k;
+                    newSharingSet.cue4ID = l;
+                    [self.dbManager insertSharingSet:newSharingSet];
+                }
+            }
+        }
+    }
 }
 
 - (void)reloadTableData:(InitAccountController *)controller{

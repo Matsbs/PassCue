@@ -43,21 +43,30 @@
     self.object = [self.dbManager getObjectByName:self.association.object];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue.image_path]];
-    self.imageView.frame = CGRectMake(40, 100, 100, 100);
+    self.imageView.frame = CGRectMake(35, 100, 120, 120);
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue.person]];
-    self.imageView.frame = CGRectMake(160, 100, 100, 100);
+    self.imageView.frame = CGRectMake(160, 100, 120, 120);
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.action.image_path]];
-    self.imageView.frame = CGRectMake(40, 220, 100, 100);
+    self.imageView.frame = CGRectMake(35, 240, 120, 120);
     [self.view addSubview:self.imageView];
+    
+    self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 385, 80, 20)];
+    self.actionLabel.textColor = [UIColor blueColor];
+    self.actionLabel.text = self.action.name;
+    [self.view addSubview:self.actionLabel];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.object.image_path]];
-    self.imageView.frame = CGRectMake(160, 220, 100, 100);
+    self.imageView.frame = CGRectMake(160, 240, 120, 120);
     [self.view addSubview:self.imageView];
     
+    self.objectLabel = [[UILabel alloc] initWithFrame:CGRectMake(195, 385, 80, 20)];
+    self.objectLabel.textColor = [UIColor blueColor];
+    self.objectLabel.text = self.object.name;
+    [self.view addSubview:self.objectLabel];
     
 //    if (self.paoNr == 1) {
 //        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
@@ -81,7 +90,18 @@
         paoView.paoNr = self.paoNr+1;
         [self.navigationController pushViewController:paoView animated:YES];
     }else{
+        NSString *alertTitle = [[NSString alloc] init];
+        alertTitle = [NSString stringWithFormat:@"Once pressed done you cannot retrieve the associations. Make sure that you have fully learned the associations."];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
+        [alert show];
         //remove associations
+        
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView
+didDismissWithButtonIndex:(NSInteger) buttonIndex{
+    if (buttonIndex == 1){
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
