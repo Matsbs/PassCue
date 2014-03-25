@@ -22,8 +22,10 @@
     CGFloat screenHeight = screenRect.size.height;
     self.view.backgroundColor = [UIColor whiteColor];
     self.titleString = [[NSString alloc]initWithFormat:@"%@%d", @"Select Cue ", self.cueNr];
-    
     self.title = self.titleString;
+    
+    self.dbManager = [[DBManager alloc] init];
+    [self.dbManager setDbPath];
 
     self.selectedBackgroundImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 80, screenWidth-100, 150)];
     [self.selectedBackgroundImage.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
@@ -96,7 +98,7 @@
         NSLog(@"Person image saved successfylly:%@",imagePersonPath);
     }
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *key = [[NSString alloc]initWithFormat:@"%@%d", @"person", self.cueNr];
+    NSString *key = [[NSString alloc]initWithFormat:@"%@%d.png", @"person", self.cueNr];
     [standardUserDefaults setObject:imagePersonPath forKey:key];
     NSLog(@"Person image path saved with key %@", key);
     
@@ -106,12 +108,12 @@
         NSLog(@"Background image saved successfylly:%@",imageBackgroundPath);
     }
 
-    key = [[NSString alloc]initWithFormat:@"%@%d", @"background", self.cueNr];
+    key = [[NSString alloc]initWithFormat:@"%@%d.png", @"background", self.cueNr];
     [standardUserDefaults setObject:imageBackgroundPath forKey:key];
     NSLog(@"Background image path saved with key %@", key);
-    
+    ////TEST
     ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc]init];
-    if (self.cueNr < 9) {
+    if (self.cueNr < 2) {
         imagePicker.cueNr = self.cueNr+1;
         [self.navigationController pushViewController:imagePicker animated:YES];
     }else{
@@ -136,18 +138,20 @@
 }
 
 - (void)createCues{
-    DBManager *dbManager = [[DBManager alloc]init];
-    [dbManager setDbPath];
+    NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
     for (int i = 1; i < 9; i++) {
         NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
         NSString *personKey = [[NSString alloc] initWithFormat:@"%@%d.png",@"person",i];
         NSString *imagePersonPath = [standardUserDefaults stringForKey:personKey];
         NSString *backgroundKey = [[NSString alloc] initWithFormat:@"%@%d.png",@"background",i];
         NSString *imageBackgroundPath = [standardUserDefaults stringForKey:backgroundKey];
+        NSLog(@"imagePersonpath %@", imagePersonPath);
         Cue *newCue = [[Cue alloc]init];
         newCue.person = imagePersonPath;
         newCue.image_path = imageBackgroundPath;
-        [dbManager insertCue:newCue];
+        NSUInteger randNumber = arc4random_uniform(10) + 1;
+        newCue.associationID = randNumber;
+        [self.dbManager insertCue:newCue];
     }
 }
 

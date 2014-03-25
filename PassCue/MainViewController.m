@@ -27,6 +27,7 @@
         [self populateDB];
         [self generateSharingSet];
         
+        
         NSString *alertTitle = [[NSString alloc] init];
         alertTitle = [NSString stringWithFormat:@"You must select 9 cues. Each of the cues must consist of one background image and one person image."];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -45,15 +46,18 @@
         [userDefaults setFloat:[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] floatValue] forKey:@"version"];
     }
     
-    NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
-    
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     self.accounts = [[NSMutableArray alloc] init];
-
+    
+    
     [self.dbManager setDbPath];
     self.accounts = [self.dbManager getAllAccounts];
+    NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
+    [self initActionDB];
+    [self initObjectDB];
+    [self initAssociations];
     
     self.title = @"Accounts";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
@@ -107,23 +111,44 @@
 }
 
 - (void)populateDB{
-    Action *newAction = [[Action alloc]init];
-    newAction.name = @"Kicking";
-    newAction.image_path = @"kick.png";
-    [self.dbManager insertAction:newAction];
-    Object *newObject = [[Object alloc]init];
-    newObject.name = @"Banana";
-    newObject.image_path = @"banana.png";
-    [self.dbManager insertObject:newObject];
     Association *newAssociation = [[Association alloc]init];
-    newAssociation.action = @"Kicking";
-    newAssociation.object = @"Banana";
+    newAssociation.action = @"kicking";
+    newAssociation.object = @"banana";
     [self.dbManager insertAssociation:newAssociation];
-    Cue *newCue = [[Cue alloc] init];
-    newCue.person = @"mats.png";
-    newCue.image_path = @"1.png";
-    newCue.associationID = 1;
-    [self.dbManager insertCue:newCue];
+}
+
+- (void)initAssociations{
+    for (int i = 0; i < 10; i++) {
+        NSUInteger randNumber = arc4random_uniform(10) + 1;
+        NSLog(@"randNumber: %d", randNumber);
+        Action *newAction = [self.dbManager getActionByID:randNumber];
+        Object *newObject = [self.dbManager getObjectByID:randNumber];
+        Association *newAssociation = [[Association alloc]init];
+        newAssociation.action = newAction.name;
+        newAssociation.object = newObject.name;
+        [self.dbManager insertAssociation:newAssociation];
+    }
+
+}
+
+- (void)initActionDB{
+    NSArray * imagePaths = [[[NSBundle mainBundle] pathsForResourcesOfType: @"jpg" inDirectory: @"actions"] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
+    for (NSString * imagePath in imagePaths) {
+        Action *newAction = [[Action alloc] init];
+        newAction.name = [[imagePath lastPathComponent]stringByDeletingPathExtension];
+        newAction.image_path = imagePath;
+        [self.dbManager insertAction:newAction];
+    }
+}
+
+- (void)initObjectDB{
+    NSArray * imagePaths = [[[NSBundle mainBundle] pathsForResourcesOfType: @"jpg" inDirectory: @"objects"] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
+    for (NSString * imagePath in imagePaths) {
+        Object *newObject = [[Object alloc] init];
+        newObject.name = [[imagePath lastPathComponent]stringByDeletingPathExtension];
+        newObject.image_path = imagePath;
+        [self.dbManager insertObject:newObject];
+    }
 }
 
 - (void)generateSharingSet{

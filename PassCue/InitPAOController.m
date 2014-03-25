@@ -42,30 +42,34 @@
     self.action = [self.dbManager getActionByName:self.association.action];
     self.object = [self.dbManager getObjectByName:self.association.object];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue.image_path]];
-    self.imageView.frame = CGRectMake(35, 100, 120, 120);
+    NSLog(@"Screenwidth:%f screenheight:%f",screenWidth, screenHeight);
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.image_path]];
+    self.imageView.frame = CGRectMake(10, 100, 145, 120);
+    [self.view addSubview:self.imageView];
+    /////HUSK
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.person]];
+    self.imageView.frame = CGRectMake(165, 100, 145, 120);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue.person]];
-    self.imageView.frame = CGRectMake(160, 100, 120, 120);
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.action.image_path]];
+    self.imageView.frame = CGRectMake(10, 255, 145, 120);
     [self.view addSubview:self.imageView];
+    NSLog(@"Action path %@", self.action.image_path);
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.action.image_path]];
-    self.imageView.frame = CGRectMake(35, 240, 120, 120);
-    [self.view addSubview:self.imageView];
-    
-    self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 385, 80, 20)];
+    self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 385, 145, 20)];
     self.actionLabel.textColor = [UIColor blueColor];
     self.actionLabel.text = self.action.name;
+    self.actionLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.actionLabel];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.object.image_path]];
-    self.imageView.frame = CGRectMake(160, 240, 120, 120);
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.object.image_path]];
+    self.imageView.frame = CGRectMake(165, 255, 145, 120);
     [self.view addSubview:self.imageView];
     
-    self.objectLabel = [[UILabel alloc] initWithFrame:CGRectMake(195, 385, 80, 20)];
+    self.objectLabel = [[UILabel alloc] initWithFrame:CGRectMake(165, 385, 145, 20)];
     self.objectLabel.textColor = [UIColor blueColor];
     self.objectLabel.text = self.object.name;
+    self.objectLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.objectLabel];
     
 //    if (self.paoNr == 1) {

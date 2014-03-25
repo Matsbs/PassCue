@@ -30,7 +30,9 @@
 - (int)insertAccount:(Account *)account;
 - (int)insertSharingSet:(SharingSet *)sharingSet;
 - (Action*)getActionByName:(NSString *)actionName;
+- (Action*)getActionByID:(int)actionID;
 - (Object*)getObjectByName:(NSString *)objectName;
+- (Object*)getObjectByID:(int)objectID;
 - (NSMutableArray*)getAllActions;
 - (NSMutableArray*)getAllObjects;
 - (Association*)getAssociationByID:(int)associationID;
@@ -42,6 +44,8 @@
 - (NSMutableArray*)getAllAccounts;
 - (void)deleteAccount:(Account *)account;
 - (void)deleteAssociationFromCue:(Cue *)cue;
+- (void)setSharingIDByAccountID:(int)accountID : (int)sharingID;
+
 
 //- (void)deleteTask:(Task *)task;
 //- (NSMutableArray*)getAllTasks;

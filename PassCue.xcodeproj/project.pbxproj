@@ -34,6 +34,11 @@
 		4E64C85418D6F30400B52495 /* Association.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85318D6F30400B52495 /* Association.m */; };
 		4E64C85718D6F4E100B52495 /* Cue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85618D6F4E100B52495 /* Cue.m */; };
 		4E64C85A18D6F8E000B52495 /* SharingSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85918D6F8E000B52495 /* SharingSet.m */; };
+		4EACD5D718E18A87000E3895 /* bird.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD5D618E18A87000E3895 /* bird.jpg */; };
+		4EACD61718E1BFE5000E3895 /* objects in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD61618E1BFE5000E3895 /* objects */; };
+		4EACD61B18E1C0B4000E3895 /* actions in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD61A18E1C0B4000E3895 /* actions */; };
+		4EBEAF1318E0E0C900CC44AC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EBEAF1218E0E0C900CC44AC /* icon@2x.png */; };
+		4EBEAF1518E0E15A00CC44AC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EBEAF1418E0E15A00CC44AC /* Default-568h@2x.png */; };
 		4ECD12F518D9CB0700E7AD33 /* InitPAOController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD12F418D9CB0700E7AD33 /* InitPAOController.m */; };
 		4ECD12FC18D9D02C00E7AD33 /* banana.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECD12FA18D9D02C00E7AD33 /* banana.png */; };
 		4ECD12FD18D9D02C00E7AD33 /* kick.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECD12FB18D9D02C00E7AD33 /* kick.png */; };
@@ -94,6 +99,11 @@
 		4E64C85618D6F4E100B52495 /* Cue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cue.m; sourceTree = "<group>"; };
 		4E64C85818D6F8E000B52495 /* SharingSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingSet.h; sourceTree = "<group>"; };
 		4E64C85918D6F8E000B52495 /* SharingSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingSet.m; sourceTree = "<group>"; };
+		4EACD5D618E18A87000E3895 /* bird.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bird.jpg; path = ../../../Downloads/bird.jpg; sourceTree = "<group>"; };
+		4EACD61618E1BFE5000E3895 /* objects */ = {isa = PBXFileReference; lastKnownFileType = folder; path = objects; sourceTree = "<group>"; };
+		4EACD61A18E1C0B4000E3895 /* actions */ = {isa = PBXFileReference; lastKnownFileType = folder; path = actions; sourceTree = "<group>"; };
+		4EBEAF1218E0E0C900CC44AC /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		4EBEAF1418E0E15A00CC44AC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		4ECD12F318D9CB0700E7AD33 /* InitPAOController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitPAOController.h; sourceTree = "<group>"; };
 		4ECD12F418D9CB0700E7AD33 /* InitPAOController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitPAOController.m; sourceTree = "<group>"; };
 		4ECD12FA18D9D02C00E7AD33 /* banana.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banana.png; sourceTree = "<group>"; };
@@ -200,6 +210,8 @@
 		4E5F9E3618D1B17E001A4FD2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4EBEAF1418E0E15A00CC44AC /* Default-568h@2x.png */,
+				4EBEAF1218E0E0C900CC44AC /* icon@2x.png */,
 				4E5F9E3718D1B17E001A4FD2 /* PassCue-Info.plist */,
 				4E5F9E3818D1B17E001A4FD2 /* InfoPlist.strings */,
 				4E5F9E3B18D1B17E001A4FD2 /* main.m */,
@@ -229,6 +241,9 @@
 		4E5F9E8418D1DE01001A4FD2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4EACD61A18E1C0B4000E3895 /* actions */,
+				4EACD61618E1BFE5000E3895 /* objects */,
+				4EACD5D618E18A87000E3895 /* bird.jpg */,
 				4E33B6AD18DB0670003DE18B /* dots.png */,
 				4ECD12FA18D9D02C00E7AD33 /* banana.png */,
 				4ECD12FB18D9D02C00E7AD33 /* kick.png */,
@@ -314,10 +329,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EACD61B18E1C0B4000E3895 /* actions in Resources */,
 				4E5F9E8818D1E270001A4FD2 /* mats.png in Resources */,
+				4EBEAF1318E0E0C900CC44AC /* icon@2x.png in Resources */,
 				4E5F9E8618D1DE26001A4FD2 /* 1.png in Resources */,
+				4EBEAF1518E0E15A00CC44AC /* Default-568h@2x.png in Resources */,
 				4E5F9E3A18D1B17E001A4FD2 /* InfoPlist.strings in Resources */,
 				4E5F9E4218D1B17E001A4FD2 /* Images.xcassets in Resources */,
+				4EACD5D718E18A87000E3895 /* bird.jpg in Resources */,
+				4EACD61718E1BFE5000E3895 /* objects in Resources */,
 				4E33B6AE18DB0670003DE18B /* dots.png in Resources */,
 				4ECD12FC18D9D02C00E7AD33 /* banana.png in Resources */,
 				4ECD12FD18D9D02C00E7AD33 /* kick.png in Resources */,
@@ -469,7 +489,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PassCue/PassCue-Prefix.pch";
 				INFOPLIST_FILE = "PassCue/PassCue-Info.plist";
@@ -482,7 +501,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PassCue/PassCue-Prefix.pch";
 				INFOPLIST_FILE = "PassCue/PassCue-Info.plist";

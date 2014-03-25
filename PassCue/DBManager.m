@@ -196,12 +196,54 @@
     return action;    
 }
 
+- (Action*)getActionByID:(int)actionID{
+    Action *action = [[Action alloc] init];
+    sqlite3_stmt *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM ACTIONS WHERE ID = (\"%d\")",actionID];
+        const char *query_stmt = [querySQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
+        if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+            if (sqlite3_step(statement) == SQLITE_ROW){
+                action.actionID = sqlite3_column_int(statement, 0);
+                action.name = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                action.image_path = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_PassCueDB);
+        }
+    }
+    return action;
+}
+
 - (Object*)getObjectByName:(NSString *)objectName{
     Object *object = [[Object alloc] init];
     sqlite3_stmt *statement;
     const char *dbpath = [_databasePath UTF8String];
     if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
         NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM OBJECTS WHERE NAME = (\"%@\")",objectName];
+        const char *query_stmt = [querySQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
+        if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+            if (sqlite3_step(statement) == SQLITE_ROW){
+                object.objectID = sqlite3_column_int(statement, 0);
+                object.name = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                object.image_path = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_PassCueDB);
+        }
+    }
+    return object;
+}
+
+- (Object*)getObjectByID:(int)objectID{
+    Object *object = [[Object alloc] init];
+    sqlite3_stmt *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM OBJECTS WHERE ID = (\"%d\")",objectID];
         const char *query_stmt = [querySQL UTF8String];
         sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
         if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
@@ -446,6 +488,24 @@
         sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
         if (sqlite3_step(statement) == SQLITE_DONE){
             NSLog(@"Association removed from cue");
+        }else{
+            NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+        sqlite3_close(_PassCueDB);
+    }
+}
+
+- (void)setSharingIDByAccountID:(int)accountID : (int)sharingID{
+    sqlite3_stmt *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
+        NSString *insertSQL = [NSString stringWithFormat:@"UPDATE ACCOUNTS SET SHARING_SET = \"%d\" WHERE ID = \"%d\"", sharingID, accountID];
+        const char *insert_stmt = [insertSQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+        if (sqlite3_step(statement) == SQLITE_DONE){
+            NSLog(@"Account updated with sharing set ID");
         }else{
             NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
         }

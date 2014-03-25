@@ -53,11 +53,15 @@
 - (IBAction)nextClicked:(id)sender {
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
-    //Get sharingID
-    newAccount.sharingSetID = 1;
-    //
     newAccount.isInitialized = NO;
     newAccount.accountID = [self.dbManager insertAccount:newAccount];
+    
+    //Must save previous rand??
+    NSUInteger randNumber = arc4random_uniform(126) + 1;
+    int rand = (int)randNumber;
+    NSLog(@"randNumber %d", rand);
+    [self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.accountID];
+
     [self.delegate reloadTableData:self];
     InitPAOController *paoView = [[InitPAOController alloc]init];
     paoView.paoNr = 1;
