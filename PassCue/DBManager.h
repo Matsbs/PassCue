@@ -45,6 +45,7 @@
 - (void)deleteAccount:(Account *)account;
 - (void)deleteAssociationFromCue:(Cue *)cue;
 - (void)setSharingIDByAccountID:(int)accountID : (int)sharingID;
+- (void)removeAssociationByCueAndCueID:(Cue *)cue : (int)cueID;
 
 
 //- (void)deleteTask:(Task *)task;

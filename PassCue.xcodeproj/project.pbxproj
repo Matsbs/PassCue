@@ -43,6 +43,7 @@
 		4ECD12FC18D9D02C00E7AD33 /* banana.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECD12FA18D9D02C00E7AD33 /* banana.png */; };
 		4ECD12FD18D9D02C00E7AD33 /* kick.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECD12FB18D9D02C00E7AD33 /* kick.png */; };
 		4ECD130018D9DB0D00E7AD33 /* ImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD12FF18D9DB0D00E7AD33 /* ImagePickerViewController.m */; };
+		4ED1F0A218E2D81800A00181 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ED1F0A118E2D81800A00181 /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		4ECD12FB18D9D02C00E7AD33 /* kick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kick.png; sourceTree = "<group>"; };
 		4ECD12FE18D9DB0D00E7AD33 /* ImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerViewController.h; sourceTree = "<group>"; };
 		4ECD12FF18D9DB0D00E7AD33 /* ImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerViewController.m; sourceTree = "<group>"; };
+		4ED1F0A118E2D81800A00181 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ED1F0A218E2D81800A00181 /* Security.framework in Frameworks */,
 				4E5F9E8018D1B603001A4FD2 /* libsqlite3.0.dylib in Frameworks */,
 				4E5F9E3218D1B17E001A4FD2 /* CoreGraphics.framework in Frameworks */,
 				4E5F9E3418D1B17E001A4FD2 /* UIKit.framework in Frameworks */,
@@ -159,6 +162,7 @@
 		4E5F9E2E18D1B17E001A4FD2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4ED1F0A118E2D81800A00181 /* Security.framework */,
 				4E33B6AB18DB0636003DE18B /* QuartzCore.framework */,
 				4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */,
 				4E5F9E2F18D1B17E001A4FD2 /* Foundation.framework */,

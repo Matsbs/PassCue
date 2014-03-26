@@ -22,7 +22,7 @@
     CGFloat screenHeight = screenRect.size.height;
     self.titleString = [[NSString alloc]initWithFormat:@"%@%d", @"Cue ", self.paoNr];
     self.title = self.titleString;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
     self.dbManager = [[DBManager alloc]init];
     [self.dbManager setDbPath];
@@ -57,7 +57,7 @@
     NSLog(@"Action path %@", self.action.image_path);
     
     self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 385, 145, 20)];
-    self.actionLabel.textColor = [UIColor blueColor];
+    self.actionLabel.textColor = [UIColor darkGrayColor];
     self.actionLabel.text = self.action.name;
     self.actionLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.actionLabel];
@@ -67,7 +67,7 @@
     [self.view addSubview:self.imageView];
     
     self.objectLabel = [[UILabel alloc] initWithFrame:CGRectMake(165, 385, 145, 20)];
-    self.objectLabel.textColor = [UIColor blueColor];
+    self.objectLabel.textColor = [UIColor darkGrayColor];
     self.objectLabel.text = self.object.name;
     self.objectLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.objectLabel];
@@ -98,20 +98,35 @@
         alertTitle = [NSString stringWithFormat:@"Once pressed done you cannot retrieve the associations. Make sure that you have fully learned the associations."];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
         [alert show];
-        //remove associations
-        
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView
 didDismissWithButtonIndex:(NSInteger) buttonIndex{
     if (buttonIndex == 1){
+        //remove associations
+        //[self removeAssociations];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
 - (IBAction)cancelClicked:(id)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)removeAssociations{
+    Cue *cue1 = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue1ID];
+    int cue1ID = [self.dbManager getSharingSetByID:self.account.sharingSetID].cue1ID;
+    [self.dbManager removeAssociationByCueAndCueID:cue1 :cue1ID];
+    Cue *cue2 = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue2ID];
+    int cue2ID = [self.dbManager getSharingSetByID:self.account.sharingSetID].cue2ID;
+    [self.dbManager removeAssociationByCueAndCueID:cue2 :cue2ID];
+    Cue *cue3 = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue3ID];
+    int cue3ID = [self.dbManager getSharingSetByID:self.account.sharingSetID].cue3ID;
+    [self.dbManager removeAssociationByCueAndCueID:cue3 :cue3ID];
+    Cue *cue4 = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue4ID];
+    int cue4ID = [self.dbManager getSharingSetByID:self.account.sharingSetID].cue4ID;
+    [self.dbManager removeAssociationByCueAndCueID:cue4 :cue4ID];
 }
 
 

@@ -24,8 +24,9 @@
         
         
         [self.dbManager initDatabase];
-        [self populateDB];
         [self generateSharingSet];
+        [self initActionDB];
+        [self initObjectDB];
         
         
         NSString *alertTitle = [[NSString alloc] init];
@@ -55,9 +56,8 @@
     [self.dbManager setDbPath];
     self.accounts = [self.dbManager getAllAccounts];
     NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
-    [self initActionDB];
-    [self initObjectDB];
-    [self initAssociations];
+    
+    //[self initAssociations];
     
     self.title = @"Accounts";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
@@ -71,6 +71,24 @@
     if (self.accounts.count > 0) {
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     }
+    
+    
+//    NSMutableData* data = [NSMutableData dataWithLength:100];
+//    int err = 0;
+//    err = SecRandomCopyBytes(kSecRandomDefault, 100, [data mutableBytes]);
+//    int i = *((char *)[data bytes]);
+//    NSLog(@"bytes in hex: %@", data);
+    
+    UInt32 randomResult = 0;
+    int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randomResult);
+    if (result != 0) {
+        randomResult = arc4random();
+        NSLog(@"Used arc4random");
+    }
+    NSLog(@"Random number %lu", randomResult % 11);
+    
+   
+    
     
 //    Action *newAction = [self.dbManager getActionByID:1];
 //    NSLog(@"Action id %d name %@ and image %@", newAction.actionID, newAction.name, newAction.image_path);
@@ -110,17 +128,15 @@
 //    [self.navigationController pushViewController:test animated:YES];   
 }
 
-- (void)populateDB{
-    Association *newAssociation = [[Association alloc]init];
-    newAssociation.action = @"kicking";
-    newAssociation.object = @"banana";
-    [self.dbManager insertAssociation:newAssociation];
-}
-
 - (void)initAssociations{
     for (int i = 0; i < 10; i++) {
-        NSUInteger randNumber = arc4random_uniform(10) + 1;
-        NSLog(@"randNumber: %d", randNumber);
+        UInt32 randNumber = 0;
+        int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber);
+        if (result != 0) {
+            randNumber = arc4random();
+            NSLog(@"Used arc4random");
+        }
+        randNumber = randNumber % 11;
         Action *newAction = [self.dbManager getActionByID:randNumber];
         Object *newObject = [self.dbManager getObjectByID:randNumber];
         Association *newAssociation = [[Association alloc]init];

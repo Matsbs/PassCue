@@ -139,18 +139,41 @@
 
 - (void)createCues{
     NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
-    for (int i = 1; i < 9; i++) {
+    for (int i = 1; i < 10; i++) {
         NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
         NSString *personKey = [[NSString alloc] initWithFormat:@"%@%d.png",@"person",i];
         NSString *imagePersonPath = [standardUserDefaults stringForKey:personKey];
         NSString *backgroundKey = [[NSString alloc] initWithFormat:@"%@%d.png",@"background",i];
         NSString *imageBackgroundPath = [standardUserDefaults stringForKey:backgroundKey];
         NSLog(@"imagePersonpath %@", imagePersonPath);
+        
         Cue *newCue = [[Cue alloc]init];
         newCue.person = imagePersonPath;
         newCue.image_path = imageBackgroundPath;
-        NSUInteger randNumber = arc4random_uniform(10) + 1;
-        newCue.associationID = randNumber;
+        
+        UInt32 randNumber = 0;
+        int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber);
+        if (result != 0) {
+            randNumber = arc4random();
+            NSLog(@"Used arc4random");
+        }
+        randNumber = (randNumber % 10)+1;
+        
+        UInt32 randNumber2 = 0;
+        int result2 = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber2);
+        if (result2 != 0) {
+            randNumber2 = arc4random();
+            NSLog(@"Used arc4random");
+        }
+        randNumber2 = (randNumber2 % 10)+1;
+
+        Action *newAction = [self.dbManager getActionByID:randNumber];
+        Object *newObject = [self.dbManager getObjectByID:randNumber2];
+        Association *newAssociation = [[Association alloc]init];
+        newAssociation.action = newAction.name;
+        newAssociation.object = newObject.name;
+        newCue.associationID = [self.dbManager insertAssociation:newAssociation];
+
         [self.dbManager insertCue:newCue];
     }
 }

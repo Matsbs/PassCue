@@ -16,6 +16,7 @@
 #import "Account.h"
 #import "SharingSet.h"
 #import "ImagePickerViewController.h"
+#import <Security/Security.h>
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, InitAccountControllerDelegate>
 

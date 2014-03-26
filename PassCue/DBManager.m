@@ -514,6 +514,32 @@
         sqlite3_close(_PassCueDB);
     }
 }
+
+- (void)removeAssociationByCueAndCueID:(Cue *)cue : (int)cueID{
+    sqlite3_stmt *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
+        NSString *insertSQL = [NSString stringWithFormat:@"DELETE FROM ASSOCIATIONS WHERE (ID) = (\"%d\")", cue.associationID];
+        const char *insert_stmt = [insertSQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+        if (sqlite3_step(statement) == SQLITE_DONE){
+            NSLog(@"Association deleted");
+        }else{
+            NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+        }
+        insertSQL = [NSString stringWithFormat:@"UPDATE CUES SET ASSOCIATION = \"%d\" WHERE ID = \"%d\"", 0, cueID];
+        insert_stmt = [insertSQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+        if (sqlite3_step(statement) == SQLITE_DONE){
+            NSLog(@"Association removed from cue");
+        }else{
+            NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+        sqlite3_close(_PassCueDB);
+    }
+}
 //Remove associations that is no longer in use?
 
 

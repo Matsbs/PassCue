@@ -41,35 +41,35 @@
     UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
     //
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue2.image_path]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.image_path]];
     self.imageView.frame = CGRectMake(0, 65, screenWidth/2,cueHeight);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue2.person]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.person]];
     self.imageView.frame = CGRectMake(screenWidth/2, 65, screenWidth/2, cueHeight);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue2.image_path]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.image_path]];
     self.imageView.frame = CGRectMake(0, cueHeight+65, screenWidth/2, cueHeight);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue2.person]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.person]];
     self.imageView.frame = CGRectMake(screenWidth/2, cueHeight+65, screenWidth/2, cueHeight);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue3.image_path]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.image_path]];
     self.imageView.frame = CGRectMake(0, (cueHeight*2)+65, screenWidth/2, cueHeight);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue3.person]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.person]];
     self.imageView.frame = CGRectMake(screenWidth/2, (cueHeight*2)+65, screenWidth/2, cueHeight);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue4.image_path]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.image_path]];
     self.imageView.frame = CGRectMake(0, (cueHeight*3)+65, screenWidth/2, cueHeight);
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.cue4.person]];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.person]];
     self.imageView.frame = CGRectMake(screenWidth/2, (cueHeight*3)+65, screenWidth/2, cueHeight);
     [self.view addSubview:self.imageView];
     
