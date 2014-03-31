@@ -31,6 +31,10 @@
             if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
                 NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
             }
+            sql_stmt ="CREATE TABLE IF NOT EXISTS REHEARSAL_SCHEDULES (ID INTEGER PRIMARY KEY AUTOINCREMENT, I INTEGER, REHEARSE_TIME DOUBLE, TIME TEXT)";
+            if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
+                NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+            }
             sql_stmt ="CREATE TABLE IF NOT EXISTS SHARING_SETS (ID INTEGER PRIMARY KEY AUTOINCREMENT, CUE1 INTEGER, CUE2 INTEGER, CUE3 INTEGER, CUE4 INTEGER, FOREIGN KEY (CUE1) REFERENCES CUES(ID), FOREIGN KEY (CUE2) REFERENCES CUES(ID), FOREIGN KEY (CUE3) REFERENCES CUES(ID), FOREIGN KEY (CUE4) REFERENCES CUES(ID) )";
             if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
                 NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
@@ -39,11 +43,11 @@
             if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
                 NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
             }
-            sql_stmt ="CREATE TABLE IF NOT EXISTS CUES (ID INTEGER PRIMARY KEY AUTOINCREMENT, PERSON TEXT, IMAGE TEXT, ASSOCIATION INTEGER, FOREIGN KEY (ASSOCIATION) REFERENCES ASSOCIATIONS(ID) )";
+            sql_stmt ="CREATE TABLE IF NOT EXISTS CUES (ID INTEGER PRIMARY KEY AUTOINCREMENT, PERSON TEXT, IMAGE TEXT, ASSOCIATION INTEGER, REHEARSAL_SCHEDULE INTEGER , FOREIGN KEY (ASSOCIATION) REFERENCES ASSOCIATIONS(ID), FOREIGN KEY (REHEARSAL_SCHEDULE) REFERENCES REHEARSAL_SCHEDULES(ID) )";
             if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
                 NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
             }
-            sql_stmt ="CREATE TABLE IF NOT EXISTS ACCOUNTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT,  SHARING_SET INTEGER, REHEARSAL_TIME TEXT, INIT BOOL, FOREIGN KEY (SHARING_SET) REFERENCES SHARING_SETSS(ID) )";
+            sql_stmt ="CREATE TABLE IF NOT EXISTS ACCOUNTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT,  SHARING_SET INTEGER, INIT BOOL, FOREIGN KEY (SHARING_SET) REFERENCES SHARING_SETSS(ID) )";
             if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
                 NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
             }
@@ -122,7 +126,7 @@
     sqlite3_stmt *statement;
     const char *dbpath = [_databasePath UTF8String];
     if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
-        NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO CUES (PERSON, IMAGE, ASSOCIATION) VALUES (\"%@\", \"%@\", \"%d\")", cue.person, cue.image_path, cue.associationID];
+        NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO CUES (PERSON, IMAGE, ASSOCIATION, REHEARSAL_SCHEDULE) VALUES (\"%@\", \"%@\", \"%d\", \"%d\")", cue.person, cue.image_path, cue.associationID, cue.rehearsalScheduleID];
         const char *insert_stmt = [insertSQL UTF8String];
         sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
         if (sqlite3_step(statement) == SQLITE_DONE){
@@ -141,7 +145,7 @@
     sqlite3_stmt *statement;
     const char *dbpath = [_databasePath UTF8String];
     if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
-        NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO ACCOUNTS (NAME, SHARING_SET, REHEARSAL_TIME, INIT) VALUES (\"%@\", \"%d\", \"%@\", \"%d\")", account.name, account.sharingSetID, account.rehearsal_time, account.isInitialized];
+        NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO ACCOUNTS (NAME, SHARING_SET) VALUES (\"%@\", \"%d\")", account.name, account.sharingSetID];
         const char *insert_stmt = [insertSQL UTF8String];
         sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
         if (sqlite3_step(statement) == SQLITE_DONE){
@@ -173,6 +177,68 @@
         sqlite3_close(_PassCueDB);
     }
     return (int)sqlite3_last_insert_rowid(_PassCueDB);
+}
+
+- (int)insertRehearsalSchedule:(RehearsalSchedule *)rehearsalSchedule{
+    sqlite3_stmt *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
+        NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO REHEARSAL_SCHEDULES (I, REHEARSE_TIME) VALUES (\"%d\", \"%f\")", rehearsalSchedule.i, rehearsalSchedule.rehearseTime];
+        const char *insert_stmt = [insertSQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+        if (sqlite3_step(statement) == SQLITE_DONE){
+            NSLog(@"Rehearsal Schedule inserted.");
+        }else{
+            NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+        sqlite3_close(_PassCueDB);
+    }
+    return (int)sqlite3_last_insert_rowid(_PassCueDB);
+}
+
+- (void)updateRehearsalSchedule:(RehearsalSchedule *)rehearsalSchedule{
+    NSDate *dateToWrite = [NSDate dateWithTimeIntervalSince1970:rehearsalSchedule.rehearseTime];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss z"];
+    NSString *stringToWrite = [dateFormatter stringFromDate:dateToWrite];
+    sqlite3_stmt *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
+        NSString *insertSQL = [NSString stringWithFormat:@"UPDATE REHEARSAL_SCHEDULES SET I = \"%d\", REHEARSE_TIME = \"%f\", TIME = \"%@\" WHERE ID = \"%d\"", rehearsalSchedule.i, rehearsalSchedule.rehearseTime, stringToWrite, rehearsalSchedule.rehearsalScheduleID];
+        const char *insert_stmt = [insertSQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+        if (sqlite3_step(statement) == SQLITE_DONE){
+            NSLog(@"Rehearsal schedule updated.");
+        }else{
+            NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+        sqlite3_close(_PassCueDB);
+    }
+}
+
+- (RehearsalSchedule*)getRehearsalScheduleByID:(int)rsID{
+    RehearsalSchedule *rehearsalSchedule = [[RehearsalSchedule alloc] init];
+    sqlite3_stmt *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_PassCueDB) == SQLITE_OK){
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM REHEARSAL_SCHEDULES WHERE ID = (\"%d\")",rsID];
+        const char *query_stmt = [querySQL UTF8String];
+        sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
+        if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+            if (sqlite3_step(statement) == SQLITE_ROW){
+                rehearsalSchedule.rehearsalScheduleID = sqlite3_column_int(statement, 0);
+                rehearsalSchedule.i = sqlite3_column_int(statement, 1);
+                rehearsalSchedule.rehearseTime = sqlite3_column_double(statement, 2);
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_PassCueDB);
+        }
+    }
+    return rehearsalSchedule;
 }
 
 - (Action*)getActionByName:(NSString *)actionName{
@@ -360,6 +426,7 @@
                 cue.person = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 cue.image_path = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                 cue.associationID = sqlite3_column_int(statement, 3);
+                cue.rehearsalScheduleID = sqlite3_column_int(statement, 4);
             }
             sqlite3_finalize(statement);
             sqlite3_close(_PassCueDB);
@@ -382,6 +449,7 @@
                 newCue.person = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 newCue.image_path = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                 newCue.associationID = sqlite3_column_int(statement, 3);
+                newCue.rehearsalScheduleID = sqlite3_column_int(statement, 4);
                 [cues addObject:newCue];
             }
             sqlite3_finalize(statement);
@@ -427,8 +495,6 @@
                 account.accountID = sqlite3_column_int(statement, 0);
                 account.name = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 account.sharingSetID = sqlite3_column_int(statement, 2);
-                account.rehearsal_time = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
-                account.isInitialized = sqlite3_column_int(statement, 4);
             }
             sqlite3_finalize(statement);
             sqlite3_close(_PassCueDB);
@@ -450,8 +516,6 @@
                 newAccount.accountID = sqlite3_column_int(statement, 0);
                 newAccount.name = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 newAccount.sharingSetID = sqlite3_column_int(statement, 2);
-                newAccount.rehearsal_time = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
-                newAccount.isInitialized = sqlite3_column_int(statement, 4);
                 [accounts addObject:newAccount];
             }
             sqlite3_finalize(statement);

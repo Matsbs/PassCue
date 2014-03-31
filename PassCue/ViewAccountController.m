@@ -78,10 +78,74 @@
     
     UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"LogIn" style:UIBarButtonItemStyleDone target:self action:@selector(cancelClicked:)] ;
     self.navigationItem.rightBarButtonItem = loginButton;
+    
+   
+    //Schedule notifier
+    NSString *year   = @"2013";
+    NSString *month  = @"1";
+    NSString *day    = @"22";
+    NSString *hour   = @"9";
+    NSString *minute = @"48";
+    
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    dateComponents.year   = [year intValue];
+    dateComponents.month  = [month intValue];
+    dateComponents.day    = [day intValue];
+    dateComponents.hour   = [hour intValue];
+    dateComponents.minute = [minute intValue];
+    
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
+    NSLog(@"date: %@", date);
+    
+    NSDate *pickerDate = date;
+    
+    // Schedule the notification
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    //Put an account identifier "A1", "A2"
+    //NSArray *fireTime = [[NSArray alloc]initWithObjects:@"12",@"13",@"14", nil];
+   
+    //Kun et object per key, evt put et array på en key?
+    NSMutableDictionary *infoDict = [NSMutableDictionary dictionaryWithObject:@"value" forKey:@"fireTime"];
+    [infoDict setValue:@"new value" forKey:@"fireTime"];
+    localNotification.userInfo = infoDict;
+    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow: 20];
+    localNotification.alertBody = @"Hello world!";
+    localNotification.alertAction = @"Show me the item";
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    
+    //This must be set properly when scheduling all notifications. It gets the real time value of the badge.
+    localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+    NSLog(@"number %d", localNotification.applicationIconBadgeNumber);
+    //[[self.view localNotification] setHidden:YES];
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                         
+    //Dictionaries
+//    NSDictionary *eventLocation = [NSDictionary dictionaryWithObjectsAndKeys:@"43.93838383",@"latitude",@"-3.46",@"latitude" nil];
+//    
+//    NSMutableDictionary *eventData = [NSDictionary dictionaryWithObjectsAndKeys:eventLocation,@"eventLocation", nil];
+//    [eventData setObject:@"Jun 13, 2012 12:00:00 AM" forKey:@"eventDate"];
+//    [eventData setObject:@"hjhj" forKey:@"text"];
+//  
+//    NSMutableDictionary *finalDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:eventData,@"eventData", nil];
+//    [finalDictionary setObject:@"ELDIARIOMONTANES" forKey:@"type"];
+//    [finalDictionary setObject:@"accIDENTE" forKey:@"title"];
+    
 }
 
 - (IBAction)cancelClicked:(id)sender {
+    NSArray *notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for (UILocalNotification *not in notifications){
+        //Separate the different account notifications
+        if ([not.userInfo objectForKey:@"fireTime"]) {
+        NSLog(@"Notification name %@ userinfo: %@", not.alertBody, [not.userInfo objectForKey:@"fireTime"]);
+        }
+    }
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (IBAction)loginClicked:(id)sender{
+    //Update RS and notifications
 }
 
 @end

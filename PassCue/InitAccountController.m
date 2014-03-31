@@ -53,7 +53,6 @@
 - (IBAction)nextClicked:(id)sender {
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
-    newAccount.isInitialized = NO;
     newAccount.accountID = [self.dbManager insertAccount:newAccount];
     
     //Must save previous rand??

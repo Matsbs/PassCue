@@ -113,7 +113,7 @@
     NSLog(@"Background image path saved with key %@", key);
     ////TEST
     ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc]init];
-    if (self.cueNr < 2) {
+    if (self.cueNr < 9) {
         imagePicker.cueNr = self.cueNr+1;
         [self.navigationController pushViewController:imagePicker animated:YES];
     }else{
@@ -150,6 +150,7 @@
         Cue *newCue = [[Cue alloc]init];
         newCue.person = imagePersonPath;
         newCue.image_path = imageBackgroundPath;
+        newCue.rehearsalScheduleID = i;
         
         UInt32 randNumber = 0;
         int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber);
@@ -177,5 +178,8 @@
         [self.dbManager insertCue:newCue];
     }
 }
+
+
+
 
 @end

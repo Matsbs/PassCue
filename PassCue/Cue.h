@@ -14,5 +14,6 @@
 @property (nonatomic, retain) NSString *image_path;
 @property int associationID;
 @property int cueID;
+@property int rehearsalScheduleID;
 
 @end

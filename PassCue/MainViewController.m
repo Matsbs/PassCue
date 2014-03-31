@@ -27,6 +27,7 @@
         [self generateSharingSet];
         [self initActionDB];
         [self initObjectDB];
+        [self initRehearsalSchedule];
         
         
         NSString *alertTitle = [[NSString alloc] init];
@@ -87,8 +88,15 @@
     }
     NSLog(@"Random number %lu", randomResult % 11);
     
-   
     
+    
+    
+    //Test RS
+//    RehearsalSchedule *rs = [[RehearsalSchedule alloc]init];
+//    rs.i = 0;
+//    NSDate *now = [NSDate date];
+//    rs.rehearseTime = [now timeIntervalSince1970];
+//    [self.dbManager insertRehearsalSchedule:rs];
     
 //    Action *newAction = [self.dbManager getActionByID:1];
 //    NSLog(@"Action id %d name %@ and image %@", newAction.actionID, newAction.name, newAction.image_path);
@@ -184,6 +192,14 @@
                 }
             }
         }
+    }
+}
+
+- (void)initRehearsalSchedule{
+    for (int i = 1; i < 10; i++) {
+        RehearsalSchedule *newRS = [[RehearsalSchedule alloc]init];
+        newRS.i = 0;
+        [self.dbManager insertRehearsalSchedule:newRS];
     }
 }
 

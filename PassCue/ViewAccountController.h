@@ -23,5 +23,6 @@
 @property (nonatomic, retain) Cue *cue3;
 @property (nonatomic, retain) Cue *cue4;
 @property int accountID;
+@property (nonatomic, retain) UILocalNotification *notification;
 
 @end

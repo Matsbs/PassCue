@@ -12,8 +12,6 @@
 
 @property (nonatomic, retain) NSString *name;
 @property int sharingSetID;
-@property (nonatomic, retain) NSString *rehearsal_time; //NSMutableArray of NSTime?
-@property bool isInitialized;
 @property int accountID;
 
 @end

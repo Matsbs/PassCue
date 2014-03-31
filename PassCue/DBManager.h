@@ -15,6 +15,7 @@
 #import "Cue.h"
 #import "Account.h"
 #import "SharingSet.h"
+#import "RehearsalSchedule.h"
 
 @interface DBManager : NSObject
 
@@ -29,10 +30,13 @@
 - (int)insertCue:(Cue *)cue;
 - (int)insertAccount:(Account *)account;
 - (int)insertSharingSet:(SharingSet *)sharingSet;
+- (int)insertRehearsalSchedule:(RehearsalSchedule *)rehearsalSchedule;
+- (void)updateRehearsalSchedule:(RehearsalSchedule *)rehearsalSchedule;
 - (Action*)getActionByName:(NSString *)actionName;
 - (Action*)getActionByID:(int)actionID;
 - (Object*)getObjectByName:(NSString *)objectName;
 - (Object*)getObjectByID:(int)objectID;
+- (RehearsalSchedule*)getRehearsalScheduleByID:(int)rsID;
 - (NSMutableArray*)getAllActions;
 - (NSMutableArray*)getAllObjects;
 - (Association*)getAssociationByID:(int)associationID;
