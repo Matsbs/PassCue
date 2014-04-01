@@ -17,17 +17,18 @@
 
 @interface InitPAOController : UIViewController
 
-@property (nonatomic, retain) UIImageView *imageView;
-@property (nonatomic, retain) NSString *titleString;
-@property (nonatomic, retain) Cue *cue;
-@property (nonatomic, retain) Account *account;
-@property (nonatomic, retain) DBManager *dbManager;
-@property (nonatomic, retain) Association *association;
-@property (nonatomic, retain) Action *action;
-@property (nonatomic, retain) Object *object;
-@property (nonatomic, retain) RehearsalSchedule *rehearsalSchedule;
-@property (nonatomic, retain) UILabel *actionLabel;
-@property (nonatomic, retain) UILabel *objectLabel;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) NSString *titleString;
+@property (nonatomic, strong) Cue *cue;
+@property (nonatomic, strong) Account *account;
+@property (nonatomic, strong) DBManager *dbManager;
+@property (nonatomic, strong) Association *association;
+@property (nonatomic, strong) Action *action;
+@property (nonatomic, strong) Object *object;
+@property (nonatomic, strong) RehearsalSchedule *rehearsalSchedule;
+@property (nonatomic, strong) UILabel *actionLabel;
+@property (nonatomic, strong) UILabel *objectLabel;
+@property (nonatomic, strong) UILocalNotification *notification;
 @property int paoNr;
 @property int accountID;
 

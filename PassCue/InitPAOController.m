@@ -30,7 +30,6 @@
     self.account = [self.dbManager getAccountByID:self.accountID];
     if (self.paoNr == 1) {
         self.cue = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue1ID];
-        
     }else if (self.paoNr == 2){
         self.cue = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue2ID];
     }else if (self.paoNr == 3){
@@ -38,15 +37,13 @@
     }else{
         self.cue = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue4ID];
     }
-    
-    [self manageRehearsalSchedule:self.cue];
-    //Check if cue has created RS, if not create, if so update.
+    NSLog(@"CueID %d SharingSetID %d", self.cue.cueID, self.account.sharingSetID);
+    [self manageRehearsalSchedule];
     
     self.association = [self.dbManager getAssociationByID:self.cue.associationID];
     self.action = [self.dbManager getActionByName:self.association.action];
     self.object = [self.dbManager getObjectByName:self.association.object];
     
-    NSLog(@"Screenwidth:%f screenheight:%f",screenWidth, screenHeight);
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.image_path]];
     self.imageView.frame = CGRectMake(10, 100, 145, 120);
     [self.view addSubview:self.imageView];
@@ -58,7 +55,6 @@
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.action.image_path]];
     self.imageView.frame = CGRectMake(10, 255, 145, 120);
     [self.view addSubview:self.imageView];
-    NSLog(@"Action path %@", self.action.image_path);
     
     self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 385, 145, 20)];
     self.actionLabel.textColor = [UIColor darkGrayColor];
@@ -97,16 +93,19 @@
         paoView.accountID = self.accountID;
         paoView.paoNr = self.paoNr+1;
         [self.navigationController pushViewController:paoView animated:YES];
-        NSArray *currentNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-        for (UILocalNotification *not in currentNotifications) {
-            NSLog(@"Notification %@ at date:%@", [not.userInfo objectForKey:@"cue1"], not.fireDate);
-        }
-        
     }else{
         NSString *alertTitle = [[NSString alloc] init];
         alertTitle = [NSString stringWithFormat:@"Once pressed done you cannot retrieve the associations. Make sure that you have fully learned the associations."];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
         [alert show];
+        
+        NSArray *currentNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+        for (UILocalNotification *not in currentNotifications) {
+//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//            [dateFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss z"];
+//            NSString *stringToWrite = [dateFormatter stringFromDate:not.fireDate];
+            NSLog(@"Notification %@ at firedate:%@", [not.userInfo allKeys], not.fireDate);
+        }
     }
 }
 
@@ -146,52 +145,39 @@ didDismissWithButtonIndex:(NSInteger) buttonIndex{
     }
 }
 
-- (void)manageRehearsalSchedule:(Cue *)cue{
+- (void)manageRehearsalSchedule{
     NSDate *now = [NSDate date];
-    if ([self hasRehearsalSchedule:cue] == YES) {
-        self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:cue.rehearsalScheduleID];
-        self.rehearsalSchedule.rehearsalScheduleID = cue.cueID;
+    if ([self hasRehearsalSchedule:self.cue] == YES) {
+        self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue.rehearsalScheduleID];
         self.rehearsalSchedule.i = self.rehearsalSchedule.i + 1;
-        self.rehearsalSchedule.rehearseTime = ([now timeIntervalSince1970] + (pow(2,(self.rehearsalSchedule.i))*(24.0*60.0*60.0)));
-        [self.dbManager updateRehearsalSchedule:self.rehearsalSchedule];
-        [self scheduleNotification:cue :self.rehearsalSchedule.rehearseTime];
     }else{
         self.rehearsalSchedule = [[RehearsalSchedule alloc]init];
-        self.rehearsalSchedule.rehearsalScheduleID = cue.cueID;
         self.rehearsalSchedule.i = 1;
-        self.rehearsalSchedule.rehearseTime = [now timeIntervalSince1970] + (pow(2,(self.rehearsalSchedule.i))*(24*60*60));
-        [self.dbManager updateRehearsalSchedule:self.rehearsalSchedule];
-        [self scheduleNotification:cue :self.rehearsalSchedule.rehearseTime];
+        self.rehearsalSchedule.rehearsalScheduleID = self.cue.cueID;
     }
-    NSDate *dateTest = [NSDate dateWithTimeIntervalSince1970:self.rehearsalSchedule.rehearseTime];
-    NSLog(@"Rehearsal schedule %f date %@", self.rehearsalSchedule.rehearseTime, dateTest);
-    
+    self.rehearsalSchedule.rehearseTime = ([now timeIntervalSince1970] + (pow(2,(self.rehearsalSchedule.i))*(24*60*60)));
+    [self.dbManager updateRehearsalSchedule:self.rehearsalSchedule];
+    [self scheduleNotification];
 }
 
-- (void)scheduleNotification:(Cue *)cue : (float)rehearseTime{
-    //Delete not for cueid - get all not, separate by cueid dic.
-    //Schedule new not
-    NSDate *dateToWrite = [NSDate date]; // current date
-    //double valueToWrite = [date timeIntervalSince1970];
-    //NSDate *dateFromDB = [NSDate dateWithTimeIntervalSince1970:valueFromDB];
-    
-    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    //Put an account identifier "A1", "A2"
-    //NSArray *fireTime = [[NSArray alloc]initWithObjects:@"12",@"13",@"14", nil];
-    
-    //Kun et object per key, evt put et array på en key?
-    NSString *cueIDString = [[NSString alloc]initWithFormat:@"cue%d",cue.cueID ];
-    NSMutableDictionary *infoDict = [NSMutableDictionary dictionaryWithObject:cueIDString forKey:cueIDString];
-    //[infoDict setValue:@"new value" forKey:@"fireTime"];
-    localNotification.userInfo = infoDict;
-    localNotification.fireDate = [NSDate dateWithTimeIntervalSince1970:rehearseTime];
-    localNotification.alertBody = @"Hello world!";
-    localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    NSLog(@"Notification scheduled");
-    
-    //Update RS and Not if notification fired outside this.!!
+- (void)scheduleNotification{
+    NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",self.cue.cueID];
+    for (UILocalNotification *notification in allScheduledNotifications) {
+        if ([notification.userInfo objectForKey:notificationCueKey]) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+    self.notification = [[UILocalNotification alloc] init];
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:notificationCueKey forKey:notificationCueKey];
+    self.notification.userInfo = userInfo;
+    self.notification.fireDate = [NSDate dateWithTimeIntervalSince1970:self.rehearsalSchedule.rehearseTime];
+    NSString *alertText = [[NSString alloc] initWithFormat:@"You must practise cue %d!",self.cue.cueID];
+    self.notification.alertBody = alertText;
+    self.notification.timeZone = [NSTimeZone defaultTimeZone];
+    [[UIApplication sharedApplication] scheduleLocalNotification:self.notification];
 
+    //Update RS and Not if notification fired outside this.!!
 }
 
 @end

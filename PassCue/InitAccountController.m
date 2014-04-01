@@ -54,11 +54,11 @@
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
     newAccount.accountID = [self.dbManager insertAccount:newAccount];
-    
+    NSLog(@"Account name:%@ id:%d", newAccount.name, newAccount.accountID);
     //Must save previous rand??
-    NSUInteger randNumber = arc4random_uniform(126) + 1;
-    int rand = (int)randNumber;
-    NSLog(@"randNumber %d", rand);
+    //NSUInteger randNumber = arc4random_uniform(126) + 1;
+    //int rand = (int)randNumber;
+    //NSLog(@"randNumber %d", rand);
     [self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.accountID];
 
     [self.delegate reloadTableData:self];

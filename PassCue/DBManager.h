@@ -20,7 +20,7 @@
 @interface DBManager : NSObject
 
 @property (strong, nonatomic) NSString *databasePath;
-@property (nonatomic) sqlite3 *PassCueDB;
+@property (atomic) sqlite3 *PassCueDB;
 
 - (void)initDatabase;
 - (void)setDbPath;

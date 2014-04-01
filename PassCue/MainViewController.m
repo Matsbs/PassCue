@@ -28,7 +28,8 @@
         [self initActionDB];
         [self initObjectDB];
         [self initRehearsalSchedule];
-        
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        NSLog(@"Cancelled all not!");
         
         NSString *alertTitle = [[NSString alloc] init];
         alertTitle = [NSString stringWithFormat:@"You must select 9 cues. Each of the cues must consist of one background image and one person image."];
@@ -80,13 +81,13 @@
 //    int i = *((char *)[data bytes]);
 //    NSLog(@"bytes in hex: %@", data);
     
-    UInt32 randomResult = 0;
-    int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randomResult);
-    if (result != 0) {
-        randomResult = arc4random();
-        NSLog(@"Used arc4random");
-    }
-    NSLog(@"Random number %lu", randomResult % 11);
+//    UInt32 randomResult = 0;
+//    int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randomResult);
+//    if (result != 0) {
+//        randomResult = arc4random();
+//        NSLog(@"Used arc4random");
+//    }
+//    NSLog(@"Random number %lu", randomResult % 11);
     
     
     
@@ -182,7 +183,7 @@
         for (j = i+1; j < length-2; j++) {
             for (k = j+1; k < length-1; k++) {
                 for (l = k+1; l < length; l++) {
-                    NSLog(@"%d %d %d %d",i,j,k,l);
+                    //NSLog(@"%d %d %d %d",i,j,k,l);
                     SharingSet *newSharingSet = [[SharingSet alloc]init];
                     newSharingSet.cue1ID = i;
                     newSharingSet.cue2ID = j;

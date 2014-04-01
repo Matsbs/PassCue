@@ -20,9 +20,9 @@
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, InitAccountControllerDelegate>
 
-@property (nonatomic, retain) UITableView *tableView;
-@property (nonatomic, retain) NSMutableArray *accounts;
-@property (nonatomic, retain) DBManager *dbManager;
-@property (nonatomic, retain) Account *account;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *accounts;
+@property (nonatomic, strong) DBManager *dbManager;
+@property (nonatomic, strong) Account *account;
 
 @end
