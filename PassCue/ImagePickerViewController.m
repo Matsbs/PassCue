@@ -24,8 +24,8 @@
     self.titleString = [[NSString alloc]initWithFormat:@"%@%d", @"Select Cue ", self.cueNr];
     self.title = self.titleString;
     
-    self.dbManager = [[DBManager alloc] init];
-    [self.dbManager setDbPath];
+    //self.dbManager = [[DBManager alloc] init];
+    //[self.dbManager setDbPath];
 
     self.selectedBackgroundImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 80, screenWidth-100, 150)];
     [self.selectedBackgroundImage.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
@@ -113,7 +113,8 @@
     NSLog(@"Background image path saved with key %@", key);
     ////TEST
     ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc]init];
-    if (self.cueNr < 9) {
+    imagePicker.dbManager = self.dbManager;
+    if (self.cueNr < 2) {
         imagePicker.cueNr = self.cueNr+1;
         [self.navigationController pushViewController:imagePicker animated:YES];
     }else{

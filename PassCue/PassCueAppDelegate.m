@@ -18,9 +18,25 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
+    self.dbManager = [[DBManager alloc]init];
+    [self.dbManager setDbPath];
+    
+    
     MainViewController *mainScreen = [[MainViewController alloc] init];
+    mainScreen.dbManager = self.dbManager;
     self.navigationController = [[UINavigationController alloc]initWithRootViewController:mainScreen];
     [self.window setRootViewController:self.navigationController];
+    
+    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotif) {
+        // Set icon badge number to zero
+                application.applicationIconBadgeNumber = 0;
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"FROM DIDFINISH"
+                                                               message:localNotif.description
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+    }
     
     // Handle launching from a notification
     UILocalNotification *locationNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
@@ -30,69 +46,90 @@
     //
     
     
-    if (locationNotification) {
-        // Set icon badge number to zero
-        application.applicationIconBadgeNumber = 1;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reminder"
-                                                        message:locationNotification.description
-                                                       delegate:self cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        
-    }
-    
-    application.applicationIconBadgeNumber = 0;
-    
-    //Get notifications from memory and check date, fire the ones that wasn't fired because the app was terminated
-    for (int i = 0; i<self.notificationsFired.count; i++) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Test"
-                                                        message:[[self.notificationsFired objectAtIndex:i]description]
-                                                       delegate:self cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
+//    if (locationNotification) {
+//        // Set icon badge number to zero
+//        application.applicationIconBadgeNumber = 1;
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reminder"
+//                                                        message:locationNotification.description
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//        
+//    }
+//    
+//    application.applicationIconBadgeNumber = 0;
+//    
+//    //Get notifications from memory and check date, fire the ones that wasn't fired because the app was terminated
+//    for (int i = 0; i<self.notificationsFired.count; i++) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Test"
+//                                                        message:[[self.notificationsFired objectAtIndex:i]description]
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//    }
     
     return YES;
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    UIApplicationState state = [application applicationState];
-    if (state == UIApplicationStateActive) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Active"
-                                                        message:notification.alertBody
-                                                       delegate:self cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        NSLog(@"active");
-    } else if (state == UIApplicationStateBackground){
-        NSLog(@"background");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Background"
-                                                        message:notification.alertBody
-                                                       delegate:self cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    } else if (state == UIApplicationStateInactive){
-        NSLog(@"inactive");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Inactive"
-                                                        message:notification.alertBody
-                                                       delegate:self cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    } else{
-        NSLog(@"terminated");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"terminated"
-                                                        message:notification.alertBody
+    
+    if (self.isAppResumingFromBackground) {
+        NSLog(@"from background");
+        // Show Alert Here
+        application.applicationIconBadgeNumber = 0;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"FROM didreceive and background"
+                                                        message:nil
                                                        delegate:self cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
     }
+    NSLog(@"YO!");
     
-    //NSLog(@"alert!");
-    // Request to reload table view data
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadData" object:self];
-    
-    // Set icon badge number to zero
     application.applicationIconBadgeNumber = 0;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"FROM DIDFINISH"
+                                                    message:nil
+                                                   delegate:self cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+//    UIApplicationState state = [application applicationState];
+//    NSMutableArray *alertArray =[[NSMutableArray alloc]init];
+//    if (state == UIApplicationStateActive) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Active"
+//                                                        message:notification.alertBody
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//        [alertArray addObject:alert];
+//        NSLog(@"active");
+//    } else if (state == UIApplicationStateBackground){
+//        NSLog(@"background");
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Background"
+//                                                        message:notification.alertBody
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//    } else if (state == UIApplicationStateInactive){
+//        NSLog(@"inactive");
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Inactive"
+//                                                        message:notification.alertBody
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//    } else{
+//        NSLog(@"terminated");
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"terminated"
+//                                                        message:notification.alertBody
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//    }
+//    
+//    //NSLog(@"alert!");
+//    // Request to reload table view data
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadData" object:self];
+//    
+//    // Set icon badge number to zero
+//    application.applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -111,25 +148,40 @@
     self.notificationsFired = [[UIApplication sharedApplication] scheduledLocalNotifications];
     NSLog(@"size %d",self.notificationsFired.count);
     NSLog(@"hello");
+    [self.dbManager closeDB];
     
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+   
+        
+        self.isAppResumingFromBackground = YES;
+    
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [self.dbManager openDB];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    for (int i = 0; i<self.notificationsFired.count; i++) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Test"
-                                                        message:[[self.notificationsFired objectAtIndex:i]alertBody]
-                                                       delegate:self cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        application.applicationIconBadgeNumber = application.applicationIconBadgeNumber - 1;
-    }
+//    for (int i = 0; i<self.notificationsFired.count; i++) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Test"
+//                                                        message:[[self.notificationsFired objectAtIndex:i]alertBody]
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//        application.applicationIconBadgeNumber = application.applicationIconBadgeNumber - 1;
+//    }
+    NSLog(@"size of scheduled not %d", self.notificationsFired.count);
+//    sjekk dato
+    application.applicationIconBadgeNumber = 0;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"FROM Didbecomeactive"
+                                                    message:nil
+                                                   delegate:self cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -139,7 +191,10 @@
     //Save the unlaunched notifications
     self.notificationsFired = [[UIApplication sharedApplication] scheduledLocalNotifications];
     NSLog(@"size %d",self.notificationsFired.count);
+    [self.dbManager closeDB];
 }
+
+
 
 @end
 

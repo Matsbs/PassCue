@@ -37,7 +37,6 @@
 		4E64C85418D6F30400B52495 /* Association.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85318D6F30400B52495 /* Association.m */; };
 		4E64C85718D6F4E100B52495 /* Cue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85618D6F4E100B52495 /* Cue.m */; };
 		4E64C85A18D6F8E000B52495 /* SharingSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85918D6F8E000B52495 /* SharingSet.m */; };
-		4EACD5D718E18A87000E3895 /* bird.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD5D618E18A87000E3895 /* bird.jpg */; };
 		4EACD61718E1BFE5000E3895 /* objects in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD61618E1BFE5000E3895 /* objects */; };
 		4EACD61B18E1C0B4000E3895 /* actions in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD61A18E1C0B4000E3895 /* actions */; };
 		4ECD12F518D9CB0700E7AD33 /* InitPAOController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD12F418D9CB0700E7AD33 /* InitPAOController.m */; };
@@ -105,7 +104,6 @@
 		4E64C85618D6F4E100B52495 /* Cue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cue.m; sourceTree = "<group>"; };
 		4E64C85818D6F8E000B52495 /* SharingSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingSet.h; sourceTree = "<group>"; };
 		4E64C85918D6F8E000B52495 /* SharingSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingSet.m; sourceTree = "<group>"; };
-		4EACD5D618E18A87000E3895 /* bird.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bird.jpg; path = ../../../Downloads/bird.jpg; sourceTree = "<group>"; };
 		4EACD61618E1BFE5000E3895 /* objects */ = {isa = PBXFileReference; lastKnownFileType = folder; path = objects; sourceTree = "<group>"; };
 		4EACD61A18E1C0B4000E3895 /* actions */ = {isa = PBXFileReference; lastKnownFileType = folder; path = actions; sourceTree = "<group>"; };
 		4ECD12F318D9CB0700E7AD33 /* InitPAOController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitPAOController.h; sourceTree = "<group>"; };
@@ -252,7 +250,6 @@
 			children = (
 				4EACD61A18E1C0B4000E3895 /* actions */,
 				4EACD61618E1BFE5000E3895 /* objects */,
-				4EACD5D618E18A87000E3895 /* bird.jpg */,
 				4E33B6AD18DB0670003DE18B /* dots.png */,
 				4ECD12FA18D9D02C00E7AD33 /* banana.png */,
 				4ECD12FB18D9D02C00E7AD33 /* kick.png */,
@@ -345,7 +342,6 @@
 				4E5FD0FF18E5A48100DF9ED4 /* icon@2x.png in Resources */,
 				4E5FD10118E5A64200DF9ED4 /* Default-568h@2x.png in Resources */,
 				4E5F9E4218D1B17E001A4FD2 /* Images.xcassets in Resources */,
-				4EACD5D718E18A87000E3895 /* bird.jpg in Resources */,
 				4EACD61718E1BFE5000E3895 /* objects in Resources */,
 				4E33B6AE18DB0670003DE18B /* dots.png in Resources */,
 				4ECD12FC18D9D02C00E7AD33 /* banana.png in Resources */,

@@ -24,8 +24,8 @@
     self.title = self.titleString;
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
-    self.dbManager = [[DBManager alloc]init];
-    [self.dbManager setDbPath];
+    //self.dbManager = [[DBManager alloc]init];
+    //[self.dbManager setDbPath];
    
     self.account = [self.dbManager getAccountByID:self.accountID];
     if (self.paoNr == 1) {
@@ -38,12 +38,13 @@
         self.cue = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue4ID];
     }
     NSLog(@"CueID %d SharingSetID %d", self.cue.cueID, self.account.sharingSetID);
+ 
     [self manageRehearsalSchedule];
-    
+
     self.association = [self.dbManager getAssociationByID:self.cue.associationID];
     self.action = [self.dbManager getActionByName:self.association.action];
     self.object = [self.dbManager getObjectByName:self.association.object];
-    
+
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.image_path]];
     self.imageView.frame = CGRectMake(10, 100, 145, 120);
     [self.view addSubview:self.imageView];
@@ -92,6 +93,7 @@
         InitPAOController *paoView = [[InitPAOController alloc]init];
         paoView.accountID = self.accountID;
         paoView.paoNr = self.paoNr+1;
+        paoView.dbManager = self.dbManager;
         [self.navigationController pushViewController:paoView animated:YES];
     }else{
         NSString *alertTitle = [[NSString alloc] init];
@@ -178,6 +180,13 @@ didDismissWithButtonIndex:(NSInteger) buttonIndex{
     [[UIApplication sharedApplication] scheduleLocalNotification:self.notification];
 
     //Update RS and Not if notification fired outside this.!!
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    NSLog(@"Memory full!");
 }
 
 @end

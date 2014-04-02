@@ -22,16 +22,18 @@
     CGFloat screenHeight = screenRect.size.height;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.dbManager = [[DBManager alloc]init];
-    [self.dbManager setDbPath];
+//    self.dbManager = [[DBManager alloc]init];
+//    [self.dbManager setDbPath];
     self.account = [self.dbManager getAccountByID:self.accountID];
     self.sharingSet = [self.dbManager getSharingSetByID:self.account.sharingSetID];
+    NSLog(@"sharing set %d", self.sharingSet.cue1ID);
     self.title = self.account.name;
     
-    self.cue1= [self.dbManager getCueByID:self.sharingSet.cue1ID];
-    self.cue2= [self.dbManager getCueByID:self.sharingSet.cue2ID];
-    self.cue3= [self.dbManager getCueByID:self.sharingSet.cue3ID];
-    self.cue4= [self.dbManager getCueByID:self.sharingSet.cue4ID];
+    self.cue1 = [self.dbManager getCueByID:self.sharingSet.cue1ID];
+    self.cue2 = [self.dbManager getCueByID:self.sharingSet.cue2ID];
+    self.cue3 = [self.dbManager getCueByID:self.sharingSet.cue3ID];
+    self.cue4 = [self.dbManager getCueByID:self.sharingSet.cue4ID];
+    NSLog(@"rs id cue2 %d", self.cue2.rehearsalScheduleID);
     
     CGFloat cueHeight = (screenHeight-65)/4;
     
@@ -76,46 +78,21 @@
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
     self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"LogIn" style:UIBarButtonItemStyleDone target:self action:@selector(cancelClicked:)] ;
+    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"LogIn" style:UIBarButtonItemStyleDone target:self action:@selector(loginClicked:)] ;
     self.navigationItem.rightBarButtonItem = loginButton;
     
-   
-    //Schedule notifier
-    NSString *year   = @"2013";
-    NSString *month  = @"1";
-    NSString *day    = @"22";
-    NSString *hour   = @"9";
-    NSString *minute = @"48";
-    
-    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-    dateComponents.year   = [year intValue];
-    dateComponents.month  = [month intValue];
-    dateComponents.day    = [day intValue];
-    dateComponents.hour   = [hour intValue];
-    dateComponents.minute = [minute intValue];
-    
-    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
-    NSLog(@"date: %@", date);
-    
-    NSDate *pickerDate = date;
-    
-    // Schedule the notification
-    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    //Put an account identifier "A1", "A2"
-    //NSArray *fireTime = [[NSArray alloc]initWithObjects:@"12",@"13",@"14", nil];
-   
-    //Kun et object per key, evt put et array på en key?
+    UILocalNotification *localNotification = [[UILocalNotification alloc]init];
     NSMutableDictionary *infoDict = [NSMutableDictionary dictionaryWithObject:@"value" forKey:@"fireTime"];
     [infoDict setValue:@"new value" forKey:@"fireTime"];
     localNotification.userInfo = infoDict;
-    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow: 20];
+    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow: 10];
     localNotification.alertBody = @"Hello world!";
     localNotification.alertAction = @"Show me the item";
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     
     //This must be set properly when scheduling all notifications. It gets the real time value of the badge.
     localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
-    NSLog(@"number %d", localNotification.applicationIconBadgeNumber);
+    NSLog(@"number %ld", (long)localNotification.applicationIconBadgeNumber);
     //[[self.view localNotification] setHidden:YES];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                          
@@ -141,13 +118,52 @@
         }
     }
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    
 }
 
 - (IBAction)loginClicked:(id)sender{
+    NSLog(@"LogIn");
     //Update RS and notifications
+    for (int i = 1; i <= 4; i++) {
+        if (i == 1) {
+            self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue1.rehearsalScheduleID];
+            self.tempCue = self.cue1;
+        }else if (i == 2){
+            self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue2.rehearsalScheduleID];
+            self.tempCue = self.cue2;
+        }else if (i == 3){
+            self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue3.rehearsalScheduleID];
+            self.tempCue = self.cue3;
+        }else{
+            self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue4.rehearsalScheduleID];
+            self.tempCue = self.cue4;
+        }
+        NSDate *now = [NSDate date];
+        self.rehearsalSchedule.i = self.rehearsalSchedule.i + 1;
+        self.rehearsalSchedule.rehearseTime = ([now timeIntervalSince1970] + (pow(2,(self.rehearsalSchedule.i))*(24*60*60)));
+        [self.dbManager updateRehearsalSchedule:self.rehearsalSchedule];
+        [self scheduleNotification:self.tempCue];
+    }
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (void)scheduleNotification:(Cue *)cue{
+    NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",cue.cueID];
+    for (UILocalNotification *notification in allScheduledNotifications) {
+        if ([notification.userInfo objectForKey:notificationCueKey]) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+    self.notification = [[UILocalNotification alloc] init];
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:notificationCueKey forKey:notificationCueKey];
+    self.notification.userInfo = userInfo;
+    self.notification.fireDate = [NSDate dateWithTimeIntervalSince1970:self.rehearsalSchedule.rehearseTime];
+    NSString *alertText = [[NSString alloc] initWithFormat:@"You must practise cue %d!",cue.cueID];
+    self.notification.alertBody = alertText;
+    self.notification.timeZone = [NSTimeZone defaultTimeZone];
+    [[UIApplication sharedApplication] scheduleLocalNotification:self.notification];
+}
 
 
 

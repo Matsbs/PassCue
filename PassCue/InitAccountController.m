@@ -22,7 +22,7 @@
     self.title = @"New Account";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.dbManager = [[DBManager alloc]init];
+    //self.dbManager = [[DBManager alloc]init];
     [self.dbManager setDbPath];
     
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(nextClicked:)] ;
@@ -61,10 +61,12 @@
     //NSLog(@"randNumber %d", rand);
     [self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.accountID];
 
-    [self.delegate reloadTableData:self];
+    
     InitPAOController *paoView = [[InitPAOController alloc]init];
     paoView.paoNr = 1;
     paoView.accountID = newAccount.accountID;
+    paoView.dbManager = self.dbManager;
+    [self.delegate reloadTableData:self];
     [self.navigationController pushViewController:paoView animated:YES];
 }
 

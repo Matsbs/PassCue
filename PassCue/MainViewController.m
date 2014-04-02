@@ -17,7 +17,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.dbManager = [[DBManager alloc]init];
+    //self.dbManager = [[DBManager alloc]init];
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ( ![userDefaults valueForKey:@"version"] ){
         // CALL your Function;
@@ -37,6 +38,7 @@
         [alert show];
         ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc] init];
         imagePicker.cueNr = 1;
+        imagePicker.dbManager = self.dbManager;
         [self.navigationController pushViewController:imagePicker animated:YES];
         // Adding version number to NSUserDefaults for first version:
         [userDefaults setFloat:[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] floatValue] forKey:@"version"];
@@ -55,7 +57,7 @@
     self.accounts = [[NSMutableArray alloc] init];
     
     
-    [self.dbManager setDbPath];
+    //[self.dbManager setDbPath];
     self.accounts = [self.dbManager getAllAccounts];
     NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
     
@@ -126,16 +128,29 @@
 //    
 //    SharingSet *newSharingSet = [self.dbManager getSharingSetByID:1];
 //    NSLog(@"Sharing set id:%d, cue1:%d, cue2:%d, cue3:%d, cue4:%d", newSharingSet.sharingSetID, newSharingSet.cue1ID, newSharingSet.cue2ID, newSharingSet.cue3ID, newSharingSet.cue4ID);
+
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    NSLog(@"YO MAMA");
+    self.accounts = [self.dbManager getAllAccounts];
+    [self.tableView reloadData];
+    
 }
 
 - (IBAction)newClicked:(id)sender {
     InitAccountController *newAccount = [[InitAccountController alloc] init];
     newAccount.delegate = self;
+    newAccount.dbManager = self.dbManager;
     self.editing = NO;
     [self.navigationController pushViewController:newAccount animated:YES];
 //    ImagePickerViewController *test = [[ImagePickerViewController alloc] init];
 //    [self.navigationController pushViewController:test animated:YES];   
 }
+
+
 
 - (void)initAssociations{
     for (int i = 0; i < 10; i++) {
@@ -241,6 +256,7 @@
         //if (self.account.isInitialized) {
             ViewAccountController *viewAccount = [[ViewAccountController alloc] init];
             viewAccount.accountID = [[self.accounts objectAtIndex:indexPath.row] accountID];
+        viewAccount.dbManager = self.dbManager;
             //viewTask.delegate = self;
             //viewTask.taskID = [[self.tasks objectAtIndex:indexPath.row] taskID];
             [self.navigationController pushViewController:viewAccount animated:YES];

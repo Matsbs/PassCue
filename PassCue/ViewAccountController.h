@@ -11,6 +11,7 @@
 #import "DBManager.h"
 #import "Cue.h"
 #import "SharingSet.h"
+#import "RehearsalSchedule.h"
 
 @interface ViewAccountController : UIViewController 
 
@@ -18,11 +19,13 @@
 @property (nonatomic, retain) DBManager *dbManager;
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) SharingSet *sharingSet;
+@property (nonatomic, retain) Cue *tempCue;
 @property (nonatomic, retain) Cue *cue1;
 @property (nonatomic, retain) Cue *cue2;
 @property (nonatomic, retain) Cue *cue3;
 @property (nonatomic, retain) Cue *cue4;
 @property int accountID;
 @property (nonatomic, retain) UILocalNotification *notification;
+@property (nonatomic, retain) RehearsalSchedule *rehearsalSchedule;
 
 @end

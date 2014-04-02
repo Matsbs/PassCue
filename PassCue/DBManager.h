@@ -50,6 +50,8 @@
 - (void)deleteAssociationFromCue:(Cue *)cue;
 - (void)setSharingIDByAccountID:(int)accountID : (int)sharingID;
 - (void)removeAssociationByCueAndCueID:(Cue *)cue : (int)cueID;
+- (void)openDB;
+- (void)closeDB;
 
 
 //- (void)deleteTask:(Task *)task;
