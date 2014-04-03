@@ -1,9 +1,9 @@
 //
 //  DBManager.h
-//  To-Do
+//  PassCue
 //
-//  Created by Mats Sandvoll on 02.12.13.
-//  Copyright (c) 2013 Mats Sandvoll. All rights reserved.
+//  Created by Mats Sandvoll on 01.02.14.
+//  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -52,11 +52,5 @@
 - (void)removeAssociationByCueAndCueID:(Cue *)cue : (int)cueID;
 - (void)openDB;
 - (void)closeDB;
-
-
-//- (void)deleteTask:(Task *)task;
-//- (NSMutableArray*)getAllTasks;
-//- (void)updateTaskByID:(Task *)task :(int)ID;
-//- (Task*)getTaskByID:(int)ID;
 
 @end

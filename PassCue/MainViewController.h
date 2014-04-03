@@ -18,6 +18,7 @@
 #import "ImagePickerViewController.h"
 #import <Security/Security.h>
 #import "PassCueAppDelegate.h"
+#import "CueViewController.h"
 
 @interface MainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, InitAccountControllerDelegate>
 

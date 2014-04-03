@@ -13,6 +13,8 @@
 
 @class InitAccountController;
 
+//Remove delegates?
+
 @protocol InitAccountControllerDelegate <NSObject>
 - (void)reloadTableData:(InitAccountController *)controller;
 @end

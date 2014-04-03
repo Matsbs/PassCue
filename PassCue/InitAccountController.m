@@ -22,9 +22,6 @@
     self.title = @"New Account";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    //self.dbManager = [[DBManager alloc]init];
-    [self.dbManager setDbPath];
-    
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(nextClicked:)] ;
     self.navigationItem.rightBarButtonItem = nextButton;
     
@@ -41,12 +38,9 @@
     self.tableView.backgroundView = nil;
     //self.tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
-    //[self.navigationItem setHidesBackButton:YES];
-
 }
 
 - (IBAction)cancelClicked:(id)sender {
-    //[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -54,19 +48,12 @@
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
     newAccount.accountID = [self.dbManager insertAccount:newAccount];
-    NSLog(@"Account name:%@ id:%d", newAccount.name, newAccount.accountID);
-    //Must save previous rand??
-    //NSUInteger randNumber = arc4random_uniform(126) + 1;
-    //int rand = (int)randNumber;
-    //NSLog(@"randNumber %d", rand);
     [self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.accountID];
-
-    
     InitPAOController *paoView = [[InitPAOController alloc]init];
     paoView.paoNr = 1;
     paoView.accountID = newAccount.accountID;
     paoView.dbManager = self.dbManager;
-    [self.delegate reloadTableData:self];
+    //[self.delegate reloadTableData:self];
     [self.navigationController pushViewController:paoView animated:YES];
 }
 
@@ -97,7 +84,6 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -105,7 +91,6 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    NSLog(@"You entered %@",self.accountNameTextField.text);
     [self.accountNameTextField resignFirstResponder];
     return YES;
 }

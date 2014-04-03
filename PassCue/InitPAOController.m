@@ -24,9 +24,6 @@
     self.title = self.titleString;
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
-    //self.dbManager = [[DBManager alloc]init];
-    //[self.dbManager setDbPath];
-   
     self.account = [self.dbManager getAccountByID:self.accountID];
     if (self.paoNr == 1) {
         self.cue = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue1ID];
@@ -37,10 +34,8 @@
     }else{
         self.cue = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue4ID];
     }
-    NSLog(@"CueID %d SharingSetID %d", self.cue.cueID, self.account.sharingSetID);
  
     [self manageRehearsalSchedule];
-
     self.association = [self.dbManager getAssociationByID:self.cue.associationID];
     self.action = [self.dbManager getActionByName:self.association.action];
     self.object = [self.dbManager getObjectByName:self.association.object];
@@ -73,13 +68,9 @@
     self.objectLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.objectLabel];
     
-//    if (self.paoNr == 1) {
-//        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
-//        self.navigationItem.leftBarButtonItem = cancelButton;
-//    }else{
-//        self.navigationItem.leftBarButtonItem = nil;
-//    }
-    //Remove cancel button?
+    if (self.paoNr == 1) {
+        [self.navigationItem setHidesBackButton:YES];
+    }
     
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(nextClicked:)];
     if (self.paoNr == 4) {
@@ -100,19 +91,10 @@
         alertTitle = [NSString stringWithFormat:@"Once pressed done you cannot retrieve the associations. Make sure that you have fully learned the associations."];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
         [alert show];
-        
-        NSArray *currentNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-        for (UILocalNotification *not in currentNotifications) {
-//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//            [dateFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss z"];
-//            NSString *stringToWrite = [dateFormatter stringFromDate:not.fireDate];
-            NSLog(@"Notification %@ at firedate:%@", [not.userInfo allKeys], not.fireDate);
-        }
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView
-didDismissWithButtonIndex:(NSInteger) buttonIndex{
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
     if (buttonIndex == 1){
         //remove associations
         //[self removeAssociations];
@@ -174,16 +156,15 @@ didDismissWithButtonIndex:(NSInteger) buttonIndex{
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:notificationCueKey forKey:notificationCueKey];
     self.notification.userInfo = userInfo;
     self.notification.fireDate = [NSDate dateWithTimeIntervalSince1970:self.rehearsalSchedule.rehearseTime];
-    NSString *alertText = [[NSString alloc] initWithFormat:@"You must practise cue %d!",self.cue.cueID];
+    NSString *alertText = [[NSString alloc] initWithFormat:@"You must practise cue %d. Check MyCues for which account you can log in to for rehearsal.",self.cue.cueID];
     self.notification.alertBody = alertText;
     self.notification.timeZone = [NSTimeZone defaultTimeZone];
     [[UIApplication sharedApplication] scheduleLocalNotification:self.notification];
-
     //Update RS and Not if notification fired outside this.!!
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
+    //Include in all files?
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     NSLog(@"Memory full!");

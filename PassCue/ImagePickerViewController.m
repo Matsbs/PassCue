@@ -23,9 +23,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.titleString = [[NSString alloc]initWithFormat:@"%@%d", @"Select Cue ", self.cueNr];
     self.title = self.titleString;
-    
-    //self.dbManager = [[DBManager alloc] init];
-    //[self.dbManager setDbPath];
 
     self.selectedBackgroundImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 80, screenWidth-100, 150)];
     [self.selectedBackgroundImage.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
@@ -91,7 +88,7 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *imagePersonPath =[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%d.png",@"person",self.cueNr]];
     NSString *imageBackgroundPath =[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%d.png",@"background",self.cueNr]];
-    
+    //Saving pictures to documents folder and save the path in nsuserdefaults
     if (![imagePersonData writeToFile:imagePersonPath atomically:NO]){
         NSLog((@"Failed to save person image data to disk"));
     }else{
@@ -107,13 +104,13 @@
     }else{
         NSLog(@"Background image saved successfylly:%@",imageBackgroundPath);
     }
-
     key = [[NSString alloc]initWithFormat:@"%@%d.png", @"background", self.cueNr];
     [standardUserDefaults setObject:imageBackgroundPath forKey:key];
     NSLog(@"Background image path saved with key %@", key);
-    ////TEST
+
     ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc]init];
     imagePicker.dbManager = self.dbManager;
+    ////TEST
     if (self.cueNr < 2) {
         imagePicker.cueNr = self.cueNr+1;
         [self.navigationController pushViewController:imagePicker animated:YES];
@@ -146,8 +143,6 @@
         NSString *imagePersonPath = [standardUserDefaults stringForKey:personKey];
         NSString *backgroundKey = [[NSString alloc] initWithFormat:@"%@%d.png",@"background",i];
         NSString *imageBackgroundPath = [standardUserDefaults stringForKey:backgroundKey];
-        NSLog(@"imagePersonpath %@", imagePersonPath);
-        
         Cue *newCue = [[Cue alloc]init];
         newCue.person = imagePersonPath;
         newCue.image_path = imageBackgroundPath;
@@ -179,8 +174,5 @@
         [self.dbManager insertCue:newCue];
     }
 }
-
-
-
 
 @end
