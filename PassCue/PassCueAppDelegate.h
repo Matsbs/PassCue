@@ -13,8 +13,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) NSArray *notificationsFired;
+@property (nonatomic, retain) NSArray *scheduledNotifications;
 @property (nonatomic, retain) DBManager *dbManager;
-@property bool isAppResumingFromBackground;
+@property bool isAppActive;
 
 @end
