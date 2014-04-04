@@ -20,7 +20,7 @@
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
-    self.titleString = [[NSString alloc]initWithFormat:@"%@%d", @"Cue ", self.paoNr];
+    self.titleString = [[NSString alloc]initWithFormat:@"%@%d", @"Part ", self.paoNr];
     self.title = self.titleString;
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
@@ -39,7 +39,14 @@
     self.association = [self.dbManager getAssociationByID:self.cue.associationID];
     self.action = [self.dbManager getActionByName:self.association.action];
     self.object = [self.dbManager getObjectByName:self.association.object];
-
+    
+    self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 70, screenWidth, 20)];
+    NSString *cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue.cueID];
+    self.cueLabel.text = cueName;
+    self.cueLabel.textAlignment = NSTextAlignmentCenter;
+    self.cueLabel.textColor = [UIColor darkGrayColor];
+    [self.view addSubview:self.cueLabel];
+    
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.image_path]];
     self.imageView.frame = CGRectMake(10, 100, 145, 120);
     [self.view addSubview:self.imageView];

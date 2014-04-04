@@ -52,5 +52,6 @@
 - (void)removeAssociationByCueAndCueID:(Cue *)cue : (int)cueID;
 - (void)openDB;
 - (void)closeDB;
+- (NSMutableArray *)getAccountsByCueID:(int)cueID;
 
 @end

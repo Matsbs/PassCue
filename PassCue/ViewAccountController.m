@@ -20,7 +20,7 @@
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
     self.account = [self.dbManager getAccountByID:self.accountID];
     self.sharingSet = [self.dbManager getSharingSetByID:self.account.sharingSetID];
@@ -31,37 +31,74 @@
     self.cue3 = [self.dbManager getCueByID:self.sharingSet.cue3ID];
     self.cue4 = [self.dbManager getCueByID:self.sharingSet.cue4ID];
     
-    CGFloat cueHeight = (screenHeight-65)/4;
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 400, screenWidth, 180) style:UITableViewStyleGrouped];
+    self.tableView.rowHeight = 40;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.sectionHeaderHeight = 0.0;
+    self.tableView.sectionFooterHeight = 0.0;
+    self.tableView.scrollEnabled = NO;
+    self.tableView.backgroundView = nil;
+    [self.view addSubview:self.tableView];
+    
+    self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 70, screenWidth, 20)];
+    NSString *cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue1.cueID];
+    self.cueLabel.text = cueName;
+    self.cueLabel.textAlignment = NSTextAlignmentCenter;
+    self.cueLabel.textColor = [UIColor darkGrayColor];
+    [self.view addSubview:self.cueLabel];
+    
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.image_path]];
-    self.imageView.frame = CGRectMake(0, 65, screenWidth/2,cueHeight);
+    self.imageView.frame = CGRectMake(10, 90, 145, 85);
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.person]];
-    self.imageView.frame = CGRectMake(screenWidth/2, 65, screenWidth/2, cueHeight);
+    self.imageView.frame = CGRectMake(165, 90, 145, 85);
     [self.view addSubview:self.imageView];
     
+    self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 175, screenWidth, 20)];
+    cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue2.cueID];
+    self.cueLabel.text = cueName;
+    self.cueLabel.textAlignment = NSTextAlignmentCenter;
+    self.cueLabel.textColor = [UIColor darkGrayColor];
+    [self.view addSubview:self.cueLabel];
+    
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.image_path]];
-    self.imageView.frame = CGRectMake(0, cueHeight+65, screenWidth/2, cueHeight);
+    self.imageView.frame = CGRectMake(10, 195, 145, 85);
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.person]];
-    self.imageView.frame = CGRectMake(screenWidth/2, cueHeight+65, screenWidth/2, cueHeight);
+    self.imageView.frame = CGRectMake(165, 195, 145, 85);
     [self.view addSubview:self.imageView];
     
+    self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 280, screenWidth, 20)];
+    cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue3.cueID];
+    self.cueLabel.text = cueName;
+    self.cueLabel.textAlignment = NSTextAlignmentCenter;
+    self.cueLabel.textColor = [UIColor darkGrayColor];
+    [self.view addSubview:self.cueLabel];
+    
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.image_path]];
-    self.imageView.frame = CGRectMake(0, (cueHeight*2)+65, screenWidth/2, cueHeight);
+    self.imageView.frame = CGRectMake(10, 300, 145, 85);
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.person]];
-    self.imageView.frame = CGRectMake(screenWidth/2, (cueHeight*2)+65, screenWidth/2, cueHeight);
+    self.imageView.frame = CGRectMake(165, 300, 145, 85);
     [self.view addSubview:self.imageView];
     
+    self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 385, screenWidth, 20)];
+    cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue4.cueID];
+    self.cueLabel.text = cueName;
+    self.cueLabel.textAlignment = NSTextAlignmentCenter;
+    self.cueLabel.textColor = [UIColor darkGrayColor];
+    [self.view addSubview:self.cueLabel];
+    
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.image_path]];
-    self.imageView.frame = CGRectMake(0, (cueHeight*3)+65, screenWidth/2, cueHeight);
+    self.imageView.frame = CGRectMake(10, 405, 145, 85);
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.person]];
-    self.imageView.frame = CGRectMake(screenWidth/2, (cueHeight*3)+65, screenWidth/2, cueHeight);
+    self.imageView.frame = CGRectMake(165, 405, 145, 85);
     [self.view addSubview:self.imageView];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
@@ -83,10 +120,47 @@
     NSLog(@"number %ld", (long)localNotification.applicationIconBadgeNumber);
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     //
+
+    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    }
+//    Get notes to account
+    CGRect cellRect = [cell bounds];
+    CGFloat cellWidth = cellRect.size.width;
+    CGFloat cellHeight = cellRect.size.height;
+    cell.textLabel.text = self.account.notes;
+    cell.selectionStyle = UITableViewCellAccessoryNone;
+    return cell;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return @"Notes";
 }
 
 - (IBAction)cancelClicked:(id)sender {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    if (self.fromCueView) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (IBAction)loginClicked:(id)sender{
@@ -110,7 +184,11 @@
         [self.dbManager updateRehearsalSchedule:self.rehearsalSchedule];
         [self scheduleNotification:self.tempCue];
     }
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    if (self.fromCueView) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (void)scheduleNotification:(Cue *)cue{

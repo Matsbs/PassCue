@@ -110,8 +110,8 @@
 
     ImagePickerViewController *imagePicker = [[ImagePickerViewController alloc]init];
     imagePicker.dbManager = self.dbManager;
-    ////TEST
-    if (self.cueNr < 2) {
+
+    if (self.cueNr < 9) {
         imagePicker.cueNr = self.cueNr+1;
         [self.navigationController pushViewController:imagePicker animated:YES];
     }else{

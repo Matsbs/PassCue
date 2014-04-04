@@ -27,5 +27,6 @@
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UITextField *accountNameTextField;
+@property (nonatomic, retain) IBOutlet UITextField *notesTextField;
 
 @end

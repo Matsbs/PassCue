@@ -29,6 +29,7 @@
 @property (nonatomic, strong) UILabel *actionLabel;
 @property (nonatomic, strong) UILabel *objectLabel;
 @property (nonatomic, strong) UILocalNotification *notification;
+@property (nonatomic, strong) UILabel *cueLabel;
 @property int paoNr;
 @property int accountID;
 

@@ -53,7 +53,7 @@
     
     self.title = @"Accounts";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
-    self.tableView.rowHeight = 50;
+    self.tableView.rowHeight = 55;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
@@ -91,7 +91,8 @@
 }
 
 - (IBAction)cuesClicked:(id)sender {
-    CueViewController *cuesView = [[CueViewController alloc] init];
+    CuesViewController *cuesView = [[CuesViewController alloc] init];
+    cuesView.dbManager = self.dbManager;
     [self.navigationController pushViewController:cuesView animated:YES];
 }
 

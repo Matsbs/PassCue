@@ -14,46 +14,67 @@
 
 @implementation CuesViewController
 
-- (void)viewDidLoad
-{
-    UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
-    _collectionView=[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
-    [_collectionView setDataSource:self];
-    [_collectionView setDelegate:self];
-    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
-    [_collectionView setBackgroundColor:[UIColor redColor]];
-    
-    
-    [self.view addSubview:_collectionView];
-    
+- (void)viewDidLoad{
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
-
-- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
-    return 9;
-}
-
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return 2;
-}
-
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGFloat screenHeight = screenRect.size.height;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    cell.backgroundColor=[UIColor greenColor];
+    self.title = @"Cues";
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
+    self.tableView.rowHeight = 55;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
+    
+    self.cues = [self.dbManager getAllCues];
+    NSLog(@"size %d", self.cues.count);
+    
+}
+
+//Table functions
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.cues.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    }
+    self.cue = [self.cues objectAtIndex:indexPath.row];
+    NSString *cueName = [[NSString alloc]initWithFormat:@"Cue %d",self.cue.cueID];
+    cell.textLabel.text = cueName;
+    UIImage *background = [[UIImage alloc]initWithContentsOfFile:self.cue.image_path];
+    UIImage *person       = [[UIImage alloc]initWithContentsOfFile:self.cue.person];
+    CGSize newSize = CGSizeMake(120, 50);
+    UIGraphicsBeginImageContext( newSize );
+    [background drawInRect:CGRectMake(0,5,55,40)];
+    [person drawInRect:CGRectMake(60,5,55,40)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    cell.imageView.image = newImage;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return CGSizeMake(50, 50);
-}
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.cue = [self.cues objectAtIndex:indexPath.row];
+    CueViewController *viewCue = [[CueViewController alloc] init];
+    viewCue.cueID = self.cue.cueID;
+    viewCue.dbManager = self.dbManager;
+//    viewCue.accountID = [[self.accounts objectAtIndex:indexPath.row] accountID];
+//    viewCue.dbManager = self.dbManager;
+    [self.navigationController pushViewController:viewCue animated:YES];
 
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

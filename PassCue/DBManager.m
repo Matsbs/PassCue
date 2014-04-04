@@ -59,7 +59,7 @@
     if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
         NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
     }
-    sql_stmt ="CREATE TABLE IF NOT EXISTS ACCOUNTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT,  SHARING_SET INTEGER, INIT BOOL, FOREIGN KEY (SHARING_SET) REFERENCES SHARING_SETSS(ID) )";
+    sql_stmt ="CREATE TABLE IF NOT EXISTS ACCOUNTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT,  SHARING_SET INTEGER, NOTES TEXT, FOREIGN KEY (SHARING_SET) REFERENCES SHARING_SETSS(ID) )";
     if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
         NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
     }
@@ -135,7 +135,7 @@
 
 - (int)insertAccount:(Account *)account{
     sqlite3_stmt *statement;
-    NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO ACCOUNTS (NAME, SHARING_SET) VALUES (\"%@\", \"%d\")", account.name, account.sharingSetID];
+    NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO ACCOUNTS (NAME, SHARING_SET, NOTES) VALUES (\"%@\", \"%d\", \"%@\")", account.name, account.sharingSetID, account.notes];
     const char *insert_stmt = [insertSQL UTF8String];
     sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
     if (sqlite3_step(statement) == SQLITE_DONE){
@@ -433,6 +433,7 @@
             account.accountID = sqlite3_column_int(statement, 0);
             account.name = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
             account.sharingSetID = sqlite3_column_int(statement, 2);
+            account.notes = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
         }
     }
     sqlite3_reset(statement);
@@ -451,6 +452,7 @@
             newAccount.accountID = sqlite3_column_int(statement, 0);
             newAccount.name = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
             newAccount.sharingSetID = sqlite3_column_int(statement, 2);
+            newAccount.notes = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
             [accounts addObject:newAccount];
         }
     }
@@ -523,6 +525,26 @@
     }
     sqlite3_reset(statement);
     sqlite3_finalize(statement);
+}
+
+- (NSMutableArray *)getAccountsByCueID:(int)cueID{
+    NSMutableArray *accounts = [[NSMutableArray alloc]init];
+    sqlite3_stmt *statement;
+    NSString *querySQL = [NSString stringWithFormat:@"SELECT a.id, a.name,a.sharing_set,a.notes FROM Accounts A JOIN Sharing_sets ON A.sharing_set=sharing_sets.id where (sharing_sets.cue1 = \"%d\" OR sharing_sets.cue2 = \"%d\" OR sharing_sets.cue3 = \"%d\" OR sharing_sets.cue4 = \"%d\"  )",cueID ,cueID, cueID, cueID];
+    const char *query_stmt = [querySQL UTF8String];
+    if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+        while (sqlite3_step(statement) == SQLITE_ROW){
+            Account *newAccount = [[Account alloc]init];
+            newAccount.accountID = sqlite3_column_int(statement, 0);
+            newAccount.name = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+            newAccount.sharingSetID = sqlite3_column_int(statement, 2);
+            newAccount.notes = [[NSString alloc]initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+            [accounts addObject:newAccount];
+        }
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+    return accounts;
 }
 
 @end

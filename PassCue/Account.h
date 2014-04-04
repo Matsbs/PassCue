@@ -11,6 +11,7 @@
 @interface Account : NSObject
 
 @property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *notes;
 @property int sharingSetID;
 @property int accountID;
 

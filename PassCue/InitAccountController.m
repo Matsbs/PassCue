@@ -47,18 +47,19 @@
 - (IBAction)nextClicked:(id)sender {
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
+    newAccount.notes = self.notesTextField.text;
     newAccount.accountID = [self.dbManager insertAccount:newAccount];
     [self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.accountID];
     InitPAOController *paoView = [[InitPAOController alloc]init];
     paoView.paoNr = 1;
     paoView.accountID = newAccount.accountID;
     paoView.dbManager = self.dbManager;
-    //[self.delegate reloadTableData:self];
+    [self.delegate reloadTableData:self];
     [self.navigationController pushViewController:paoView animated:YES];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -74,10 +75,17 @@
     CGRect cellRect = [cell bounds];
     CGFloat cellWidth = cellRect.size.width;
     CGFloat cellHeight = cellRect.size.height;
-    self.accountNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(15, 5, cellWidth,cellHeight)];
-    self.accountNameTextField.delegate = self;
-    self.accountNameTextField.placeholder = @"Enter Account Name";
-    [cell.contentView addSubview:self.accountNameTextField];
+    if (indexPath.section == 0) {
+        self.accountNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(15, 5, cellWidth,cellHeight)];
+        self.accountNameTextField.delegate = self;
+        self.accountNameTextField.placeholder = @"Enter Account Name";
+        [cell.contentView addSubview:self.accountNameTextField];
+    }else{
+        self.notesTextField = [[UITextField alloc] initWithFrame:CGRectMake(15, 5, cellWidth,cellHeight)];
+        self.notesTextField.delegate = self;
+        self.notesTextField.placeholder = @"Enter Notes";
+        [cell.contentView addSubview:self.notesTextField];
+    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -87,11 +95,16 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return @"Account Name";
+    if (section == 0) {
+        return @"Account Name";
+    }else{
+        return @"Notes";
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [self.accountNameTextField resignFirstResponder];
+    [self.notesTextField resignFirstResponder];
     return YES;
 }
 

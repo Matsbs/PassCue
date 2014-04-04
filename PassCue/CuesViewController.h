@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DBManager.h"
+#import "Cue.h"
+#import "CueViewController.h"
 
-@interface CuesViewController : UIViewController <UICollectionViewDataSource,  UICollectionViewDelegate>{
-    UICollectionView *_collectionView;
-}
+@interface CuesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) NSMutableArray *cues;
+@property (nonatomic, retain) DBManager *dbManager;
+@property (nonatomic, retain) Cue *cue;
 
 @end

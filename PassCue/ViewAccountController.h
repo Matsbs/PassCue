@@ -13,7 +13,7 @@
 #import "SharingSet.h"
 #import "RehearsalSchedule.h"
 
-@interface ViewAccountController : UIViewController 
+@interface ViewAccountController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) Account *account;
 @property (nonatomic, retain) DBManager *dbManager;
@@ -27,5 +27,8 @@
 @property int accountID;
 @property (nonatomic, retain) UILocalNotification *notification;
 @property (nonatomic, retain) RehearsalSchedule *rehearsalSchedule;
+@property bool fromCueView;
+@property (nonatomic, retain) UILabel *cueLabel;
+@property (nonatomic, retain) UITableView *tableView;
 
 @end
