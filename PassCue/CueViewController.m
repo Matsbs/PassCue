@@ -30,6 +30,7 @@
     self.title = cueName;
     
     self.accounts = [self.dbManager getAccountsByCueID:self.cue.cueID];
+    self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue.cueID];
     NSLog(@"Size %d", self.accounts.count);
     
     self.backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.image_path]];
@@ -41,7 +42,7 @@
     [self.view addSubview:self.personImage];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 200, screenWidth, screenHeight) style:UITableViewStyleGrouped];
-    self.tableView.rowHeight = 55;
+    self.tableView.rowHeight = 50;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.sectionHeaderHeight = 0.0;
@@ -52,11 +53,15 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.accounts.count;
+    if (section == 0) {
+        return 1;
+    }else{
+        return self.accounts.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -65,12 +70,22 @@
     if (cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-    self.account = [self.accounts objectAtIndex:indexPath.row];
     CGRect cellRect = [cell bounds];
     CGFloat cellWidth = cellRect.size.width;
     CGFloat cellHeight = cellRect.size.height;
-    cell.textLabel.text = self.account.name;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (indexPath.section == 0) {
+        NSDate *dateToWrite = [NSDate dateWithTimeIntervalSince1970:self.rehearsalSchedule.rehearseTime];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"EEEE dd-MM-yyy 'at' HH:mm:ss"];
+        NSString *stringToWrite = [dateFormatter stringFromDate:dateToWrite];
+        cell.textLabel.text = stringToWrite;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }else{
+        self.account = [self.accounts objectAtIndex:indexPath.row];
+        cell.textLabel.text = self.account.name;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
     return cell;
 }
 
@@ -86,7 +101,11 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return @"Accounts";
+    if (section == 0) {
+        return @"Next Rehearsal";
+    }else{
+        return @"Accounts";
+    }
 }
 
 

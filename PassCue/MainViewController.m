@@ -53,9 +53,11 @@
     
     self.title = @"Accounts";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
-    self.tableView.rowHeight = 55;
+    self.tableView.rowHeight = 50;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+
     [self.view addSubview:self.tableView];
     
     NSMutableArray *navButtons = [[NSMutableArray alloc]init];

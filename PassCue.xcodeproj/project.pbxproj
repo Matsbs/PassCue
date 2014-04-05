@@ -28,7 +28,6 @@
 		4E5F9E7E18D1B57D001A4FD2 /* ViewAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E7818D1B57D001A4FD2 /* ViewAccountController.m */; };
 		4E5F9E8018D1B603001A4FD2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */; };
 		4E5F9E8318D1B82E001A4FD2 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E8218D1B82E001A4FD2 /* Account.m */; };
-		4E5FD0FF18E5A48100DF9ED4 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E5FD0FE18E5A48100DF9ED4 /* icon@2x.png */; };
 		4E5FD10118E5A64200DF9ED4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E5FD10018E5A64200DF9ED4 /* Default-568h@2x.png */; };
 		4E6141C618E95281007D26BD /* RehearsalSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6141C518E95281007D26BD /* RehearsalSchedule.m */; };
 		4E64C84E18D6F0B900B52495 /* Object.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C84D18D6F0B900B52495 /* Object.m */; };
@@ -36,6 +35,7 @@
 		4E64C85418D6F30400B52495 /* Association.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85318D6F30400B52495 /* Association.m */; };
 		4E64C85718D6F4E100B52495 /* Cue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85618D6F4E100B52495 /* Cue.m */; };
 		4E64C85A18D6F8E000B52495 /* SharingSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E64C85918D6F8E000B52495 /* SharingSet.m */; };
+		4E983EDB18F0325900D67D05 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E983EDA18F0325900D67D05 /* icon@2x.png */; };
 		4EACD61718E1BFE5000E3895 /* objects in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD61618E1BFE5000E3895 /* objects */; };
 		4EACD61B18E1C0B4000E3895 /* actions in Resources */ = {isa = PBXBuildFile; fileRef = 4EACD61A18E1C0B4000E3895 /* actions */; };
 		4ECD12F518D9CB0700E7AD33 /* InitPAOController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD12F418D9CB0700E7AD33 /* InitPAOController.m */; };
@@ -88,7 +88,6 @@
 		4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4E5F9E8118D1B82E001A4FD2 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		4E5F9E8218D1B82E001A4FD2 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
-		4E5FD0FE18E5A48100DF9ED4 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
 		4E5FD10018E5A64200DF9ED4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		4E6141C418E95281007D26BD /* RehearsalSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RehearsalSchedule.h; sourceTree = "<group>"; };
 		4E6141C518E95281007D26BD /* RehearsalSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RehearsalSchedule.m; sourceTree = "<group>"; };
@@ -102,6 +101,7 @@
 		4E64C85618D6F4E100B52495 /* Cue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cue.m; sourceTree = "<group>"; };
 		4E64C85818D6F8E000B52495 /* SharingSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingSet.h; sourceTree = "<group>"; };
 		4E64C85918D6F8E000B52495 /* SharingSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingSet.m; sourceTree = "<group>"; };
+		4E983EDA18F0325900D67D05 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		4EACD61618E1BFE5000E3895 /* objects */ = {isa = PBXFileReference; lastKnownFileType = folder; path = objects; sourceTree = "<group>"; };
 		4EACD61A18E1C0B4000E3895 /* actions */ = {isa = PBXFileReference; lastKnownFileType = folder; path = actions; sourceTree = "<group>"; };
 		4ECD12F318D9CB0700E7AD33 /* InitPAOController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitPAOController.h; sourceTree = "<group>"; };
@@ -217,8 +217,8 @@
 		4E5F9E3618D1B17E001A4FD2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4E983EDA18F0325900D67D05 /* icon@2x.png */,
 				4E5FD10018E5A64200DF9ED4 /* Default-568h@2x.png */,
-				4E5FD0FE18E5A48100DF9ED4 /* icon@2x.png */,
 				4E5F9E3718D1B17E001A4FD2 /* PassCue-Info.plist */,
 				4E5F9E3818D1B17E001A4FD2 /* InfoPlist.strings */,
 				4E5F9E3B18D1B17E001A4FD2 /* main.m */,
@@ -332,10 +332,10 @@
 			files = (
 				4EACD61B18E1C0B4000E3895 /* actions in Resources */,
 				4E5F9E3A18D1B17E001A4FD2 /* InfoPlist.strings in Resources */,
-				4E5FD0FF18E5A48100DF9ED4 /* icon@2x.png in Resources */,
 				4E5FD10118E5A64200DF9ED4 /* Default-568h@2x.png in Resources */,
 				4E5F9E4218D1B17E001A4FD2 /* Images.xcassets in Resources */,
 				4EACD61718E1BFE5000E3895 /* objects in Resources */,
+				4E983EDB18F0325900D67D05 /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

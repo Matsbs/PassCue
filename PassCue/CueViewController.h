@@ -21,5 +21,6 @@
 @property int cueID;
 @property (nonatomic, retain) NSMutableArray *accounts;
 @property (nonatomic, retain) Account *account;
+@property (nonatomic, retain) RehearsalSchedule *rehearsalSchedule;
 
 @end
