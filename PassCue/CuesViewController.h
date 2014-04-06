@@ -17,5 +17,6 @@
 @property (nonatomic, retain) NSMutableArray *cues;
 @property (nonatomic, retain) DBManager *dbManager;
 @property (nonatomic, retain) Cue *cue;
+@property (nonatomic, retain) NSMutableArray *accounts;
 
 @end

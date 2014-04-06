@@ -32,7 +32,6 @@
     
     self.cues = [self.dbManager getAllCues];
     NSLog(@"size %d", self.cues.count);
-    
 }
 
 //Table functions
@@ -48,7 +47,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     self.cue = [self.cues objectAtIndex:indexPath.row];
     NSString *cueName = [[NSString alloc]initWithFormat:@"Cue %d",self.cue.cueID];
@@ -63,6 +62,10 @@
     UIGraphicsEndImageContext();
     cell.imageView.image = newImage;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    self.accounts = [self.dbManager getAccountsByCueID:self.cue.cueID];
+    NSString *detailText = [[NSString alloc]initWithFormat:@"Accounts: %d",[self.accounts count] ];
+    cell.detailTextLabel.text = detailText;
+    cell.detailTextLabel.textColor = [UIColor grayColor];
     return cell;
 }
 

@@ -51,6 +51,14 @@
     self.accounts = [self.dbManager getAllAccounts];
     NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
     
+    NSLog(@"Accounts by cueid 10 %d", [[self.dbManager getAccountsByCueID:10]count]);
+    NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for (UILocalNotification *not in allScheduledNotifications) {
+        NSLog(@"Notification %@", not.alertBody);
+    }
+    NSLog(@"Number of notifications %d",allScheduledNotifications.count);
+    
+    
     self.title = @"Accounts";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
     self.tableView.rowHeight = 50;
@@ -219,12 +227,44 @@
  forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(editing == UITableViewCellEditingStyleDelete) {
         [self.dbManager deleteAccount:[self.accounts objectAtIndex:indexPath.row]];
+        [self checkCuesForAccount:[self.accounts objectAtIndex:indexPath.row]];
         [self.accounts removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         if (self.accounts.count == 0) {
             self.navigationItem.leftBarButtonItem = NULL;
         }
     }
+}
+
+- (void)checkCuesForAccount:(Account *)account{
+    SharingSet *sharingSet = [self.dbManager getSharingSetByID:account.sharingSetID];
+    Cue *cue1 = [self.dbManager getCueByID:sharingSet.cue1ID];
+    Cue *cue2 = [self.dbManager getCueByID:sharingSet.cue2ID];
+    Cue *cue3 = [self.dbManager getCueByID:sharingSet.cue3ID];
+    Cue *cue4 = [self.dbManager getCueByID:sharingSet.cue4ID];
+    if ([[self.dbManager getAccountsByCueID:cue1.cueID] count] == 0) {
+        [self deleteNotificationByCueID:cue1.cueID];
+    }
+    if ([[self.dbManager getAccountsByCueID:cue2.cueID] count] == 0){
+        [self deleteNotificationByCueID:cue2.cueID];
+    }
+    if ([[self.dbManager getAccountsByCueID:cue3.cueID] count] == 0){
+        [self deleteNotificationByCueID:cue3.cueID];
+    }
+    if ([[self.dbManager getAccountsByCueID:cue4.cueID] count] == 0){
+        [self deleteNotificationByCueID:cue4.cueID];
+    }
+}
+        
+- (void)deleteNotificationByCueID:(int)cueID{
+    NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",cueID];
+    for (UILocalNotification *notification in allScheduledNotifications) {
+        if ([notification.userInfo objectForKey:notificationCueKey]) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+    NSLog(@"Deleted notification for cue %d", cueID);
 }
 
 @end

@@ -163,7 +163,7 @@
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:notificationCueKey forKey:notificationCueKey];
     self.notification.userInfo = userInfo;
     self.notification.fireDate = [NSDate dateWithTimeIntervalSince1970:self.rehearsalSchedule.rehearseTime];
-    NSString *alertText = [[NSString alloc] initWithFormat:@"You must practise cue %d. Check MyCues for which account you can log in to for rehearsal.",self.cue.cueID];
+    NSString *alertText = [[NSString alloc] initWithFormat:@"You must practise cue %d. Check Cues for which account you can log in to for rehearsal.",self.cue.cueID];
     self.notification.alertBody = alertText;
     self.notification.timeZone = [NSTimeZone defaultTimeZone];
     [[UIApplication sharedApplication] scheduleLocalNotification:self.notification];

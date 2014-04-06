@@ -463,7 +463,7 @@
 
 - (void)deleteAccount:(Account *)account{
     sqlite3_stmt *statement;
-    NSString *insertSQL = [NSString stringWithFormat:@"DELETE FROM ACCOUNTS WHERE (NAME) = (\"%@\")", account.name];
+    NSString *insertSQL = [NSString stringWithFormat:@"DELETE FROM ACCOUNTS WHERE (ID) = (\"%d\")", account.accountID];
     const char *insert_stmt = [insertSQL UTF8String];
     sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
     if (sqlite3_step(statement) == SQLITE_DONE){
