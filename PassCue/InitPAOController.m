@@ -49,14 +49,20 @@
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.image_path]];
     self.imageView.frame = CGRectMake(10, 100, 145, 120);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
    
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.person]];
     self.imageView.frame = CGRectMake(165, 100, 145, 120);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.action.image_path]];
     self.imageView.frame = CGRectMake(10, 255, 145, 120);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 385, 145, 20)];
@@ -67,6 +73,8 @@
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.object.image_path]];
     self.imageView.frame = CGRectMake(165, 255, 145, 120);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.objectLabel = [[UILabel alloc] initWithFrame:CGRectMake(165, 385, 145, 20)];

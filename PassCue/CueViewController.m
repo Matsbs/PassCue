@@ -35,13 +35,17 @@
     
     self.backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.image_path]];
     self.backgroundImage.frame = CGRectMake(10, 100, 145, 120);
+    [self.backgroundImage.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.backgroundImage.layer setBorderWidth: 2.0];
     [self.view addSubview:self.backgroundImage];
     
     self.personImage = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue.person]];
     self.personImage.frame = CGRectMake(165, 100, 145, 120);
+    [self.personImage.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.personImage.layer setBorderWidth: 2.0];
     [self.view addSubview:self.personImage];
     
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 200, screenWidth, screenHeight) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 220, screenWidth, screenHeight) style:UITableViewStyleGrouped];
     self.tableView.rowHeight = 50;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -52,15 +56,23 @@
     [self.view addSubview:self.tableView];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue.cueID];
+    [self.tableView reloadData];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 1;
-    }else{
+    }else if (section == 1){
         return self.accounts.count;
+    }else{
+        return 1;
     }
 }
 
@@ -76,14 +88,21 @@
     if (indexPath.section == 0) {
         NSDate *dateToWrite = [NSDate dateWithTimeIntervalSince1970:self.rehearsalSchedule.rehearseTime];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"EEEE dd-MM-yyy 'at' HH:mm:ss"];
-        NSString *stringToWrite = [dateFormatter stringFromDate:dateToWrite];
+        [dateFormatter setDateFormat:@"EEEE dd-MM-yyy 'AT' HH:mm:ss"];
+        dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"us_US"];
+        NSString *stringToWrite = [[dateFormatter stringFromDate:dateToWrite] capitalizedString];
         cell.textLabel.text = stringToWrite;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }else{
+    }else if (indexPath.section == 1){
         self.account = [self.accounts objectAtIndex:indexPath.row];
         cell.textLabel.text = self.account.name;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        cell.textLabel.text = @"Delete Cue";
+        cell.textLabel.textColor = [UIColor redColor];
+        cell.accessoryType = UITableViewCellEditingStyleNone;
     }
     
     return cell;
@@ -91,23 +110,59 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.account = [self.accounts objectAtIndex:indexPath.row];
-    ViewAccountController *viewAccount = [[ViewAccountController alloc] init];
-    viewAccount.accountID = [[self.accounts objectAtIndex:indexPath.row] accountID];
-    viewAccount.dbManager = self.dbManager;
-    viewAccount.fromCueView = YES;
-    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:viewAccount];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    if (indexPath.section == 1) {
+        self.account = [self.accounts objectAtIndex:indexPath.row];
+        ViewAccountController *viewAccount = [[ViewAccountController alloc] init];
+        viewAccount.accountID = [[self.accounts objectAtIndex:indexPath.row] accountID];
+        viewAccount.dbManager = self.dbManager;
+        viewAccount.fromCueView = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:viewAccount];
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }else if (indexPath.section == 2){
+        NSString *alertTitle = [[NSString alloc] init];
+        alertTitle = [NSString stringWithFormat:@"Are you sure you want to delete this cue? All accounts with this cue will be deleted."];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+        [alert show];
+    }
 }
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
+    if (buttonIndex == 1){
+        //delete all accounts with the cue, delete the cue and remove from sharing set, delete any not with cue id.
+        [self deleteNotificationByCueID:self.cue.cueID];
+        [self.dbManager deleteCueAndRemoveFromSharingSets:self.cue];
+        [self deleteAccountsWithCueID:self.cue];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return @"Next Rehearsal";
-    }else{
+    }else if (section == 1){
         return @"Accounts";
+    }else{
+        return @" ";
     }
 }
 
+- (void)deleteNotificationByCueID:(int)cueID{
+    NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",cueID];
+    for (UILocalNotification *notification in allScheduledNotifications) {
+        if ([notification.userInfo objectForKey:notificationCueKey]) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+    NSLog(@"Deleted notification for cue %d", cueID);
+}
+
+- (void)deleteAccountsWithCueID:(Cue *)cue{
+    for (Account *account in self.accounts){
+        [self.dbManager deleteAccount:account];
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {

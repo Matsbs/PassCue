@@ -21,7 +21,8 @@
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-
+    
+    
     self.account = [self.dbManager getAccountByID:self.accountID];
     self.sharingSet = [self.dbManager getSharingSetByID:self.account.sharingSetID];
     self.title = self.account.name;
@@ -50,10 +51,14 @@
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.image_path]];
     self.imageView.frame = CGRectMake(10, 90, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.person]];
     self.imageView.frame = CGRectMake(165, 90, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 175, screenWidth, 20)];
@@ -65,10 +70,14 @@
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.image_path]];
     self.imageView.frame = CGRectMake(10, 195, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.person]];
     self.imageView.frame = CGRectMake(165, 195, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 280, screenWidth, 20)];
@@ -80,10 +89,14 @@
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.image_path]];
     self.imageView.frame = CGRectMake(10, 300, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.person]];
     self.imageView.frame = CGRectMake(165, 300, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 385, screenWidth, 20)];
@@ -95,10 +108,14 @@
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.image_path]];
     self.imageView.frame = CGRectMake(10, 405, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.person]];
     self.imageView.frame = CGRectMake(165, 405, 145, 85);
+    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
@@ -116,12 +133,10 @@
     localNotification.alertBody = @"You must practise cue 1";
     localNotification.soundName = UILocalNotificationDefaultSoundName;
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+    localNotification.applicationIconBadgeNumber = 1;
     NSLog(@"number %ld", (long)localNotification.applicationIconBadgeNumber);
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     //
-
-    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -207,7 +222,7 @@
     self.notification.alertBody = alertText;
     self.notification.timeZone = [NSTimeZone defaultTimeZone];
     self.notification.soundName = UILocalNotificationDefaultSoundName;
-    self.notification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+    self.notification.applicationIconBadgeNumber = 1;
     [[UIApplication sharedApplication] scheduleLocalNotification:self.notification];
 }
 

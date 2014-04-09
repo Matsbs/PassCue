@@ -43,29 +43,29 @@
         // Call Your Function;
         // Update version number to NSUserDefaults for other versions:
         [userDefaults setFloat:[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] floatValue] forKey:@"version"];
+        
     }
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     
-    self.accounts = [self.dbManager getAllAccounts];
+    [self.dbManager openDB];
     NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
-    
-    NSLog(@"Accounts by cueid 10 %d", [[self.dbManager getAccountsByCueID:10]count]);
+    self.accounts = [self.dbManager getAllAccounts];
+    NSLog(@"Accounts by cueid 1 %d", [[self.dbManager getAccountsByCueID:1]count]);
     NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     for (UILocalNotification *not in allScheduledNotifications) {
         NSLog(@"Notification %@", not.alertBody);
     }
-    NSLog(@"Number of notifications %d",allScheduledNotifications.count);
-    
     
     self.title = @"Accounts";
+    
+    self.accounts = [self.dbManager getAllAccounts];
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
     self.tableView.rowHeight = 50;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-
     [self.view addSubview:self.tableView];
     
     NSMutableArray *navButtons = [[NSMutableArray alloc]init];
@@ -81,7 +81,7 @@
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     }
 }
-
+//Make delegate from cueview?
 -(void)viewDidAppear:(BOOL)animated{
     //No need for delegates?
     [super viewDidAppear:animated];
@@ -93,11 +93,18 @@
 }
 
 - (IBAction)newClicked:(id)sender {
-    InitAccountController *newAccount = [[InitAccountController alloc] init];
-    newAccount.delegate = self;
-    newAccount.dbManager = self.dbManager;
-    self.editing = NO;
-    [self.navigationController pushViewController:newAccount animated:YES];
+    if ([self.dbManager numberOfAccounts] < [[self.dbManager getAvailableSharingSetIDs]count]) {
+        InitAccountController *newAccount = [[InitAccountController alloc] init];
+        newAccount.delegate = self;
+        newAccount.dbManager = self.dbManager;
+        self.editing = NO;
+        [self.navigationController pushViewController:newAccount animated:YES];
+    }else{
+        NSString *alertTitle = [[NSString alloc] init];
+        alertTitle = [NSString stringWithFormat:@"You have reached the maximum number of accounts."];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (IBAction)cuesClicked:(id)sender {
@@ -228,6 +235,7 @@
     if(editing == UITableViewCellEditingStyleDelete) {
         [self.dbManager deleteAccount:[self.accounts objectAtIndex:indexPath.row]];
         [self checkCuesForAccount:[self.accounts objectAtIndex:indexPath.row]];
+        [self.dbManager deleteSharingSetByAccount:[self.accounts objectAtIndex:indexPath.row]];
         [self.accounts removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         if (self.accounts.count == 0) {

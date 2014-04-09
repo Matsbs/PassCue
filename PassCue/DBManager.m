@@ -547,4 +547,88 @@
     return accounts;
 }
 
+- (int)numberOfAccounts{
+    int nrOfAccounts = 0;
+    sqlite3_stmt *statement;
+    NSString *querySQL = [NSString stringWithFormat:@"SELECT ID FROM ACCOUNTS ORDER BY ID DESC LIMIT 1"];
+    const char *query_stmt = [querySQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
+    if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+        if (sqlite3_step(statement) == SQLITE_ROW){
+            nrOfAccounts = sqlite3_column_int(statement, 0);
+        }
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+    NSLog(@"nr of accounts %d", nrOfAccounts);
+    return nrOfAccounts;
+}
+
+- (void)deleteCueAndRemoveFromSharingSets:(Cue *)cue{
+    sqlite3_stmt *statement;
+    NSString *insertSQL = [NSString stringWithFormat:@"DELETE FROM SHARING_SETS WHERE (CUE1 = (\"%d\") OR CUE2 = (\"%d\") OR CUE3 = (\"%d\") OR CUE4 = (\"%d\") )", cue.cueID, cue.cueID, cue.cueID, cue.cueID];
+    const char *insert_stmt = [insertSQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+    if (sqlite3_step(statement) == SQLITE_DONE){
+        NSLog(@"Cue deleted from sharing set.");
+    }else{
+        NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+    }
+    sqlite3_reset(statement);
+    insertSQL = [NSString stringWithFormat:@"DELETE FROM CUES WHERE ID = (\"%d\")", cue.cueID];
+    insert_stmt = [insertSQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+    if (sqlite3_step(statement) == SQLITE_DONE){
+        NSLog(@"Cue deleted.");
+    }else{
+        NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+    }
+    sqlite3_finalize(statement);
+}
+
+- (int)numberOfSharingSets{
+    int nrOfSharingSets;
+    sqlite3_stmt *statement;
+    NSString *querySQL = [NSString stringWithFormat:@"SELECT COUNT (*) FROM SHARING_SETS"];
+    const char *query_stmt = [querySQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, query_stmt,-1, &statement, NULL);
+    if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+        if (sqlite3_step(statement) == SQLITE_ROW){
+            nrOfSharingSets = sqlite3_column_int(statement, 0);
+        }
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+    return nrOfSharingSets;
+}
+
+- (NSMutableArray *)getAvailableSharingSetIDs{
+    NSMutableArray *sharingSetIDs = [[NSMutableArray alloc]init];
+    sqlite3_stmt *statement;
+    NSString *querySQL = [NSString stringWithFormat:@"SELECT ID FROM SHARING_SETS"];
+    const char *query_stmt = [querySQL UTF8String];
+    if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+        while (sqlite3_step(statement) == SQLITE_ROW){
+            [sharingSetIDs addObject:[NSNumber numberWithInt:sqlite3_column_int(statement, 0)]];
+        }
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+    return sharingSetIDs;
+}
+
+- (void)deleteSharingSetByAccount:(Account *)account{
+    sqlite3_stmt *statement;
+    NSString *insertSQL = [NSString stringWithFormat:@"DELETE FROM SHARING_SETS WHERE ID = \"%d\"", account.sharingSetID];
+    const char *insert_stmt = [insertSQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+    if (sqlite3_step(statement) == SQLITE_DONE){
+        NSLog(@"Sharing set deleted.");
+    }else{
+        NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+}
+
 @end

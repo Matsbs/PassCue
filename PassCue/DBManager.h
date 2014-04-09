@@ -53,5 +53,11 @@
 - (void)openDB;
 - (void)closeDB;
 - (NSMutableArray *)getAccountsByCueID:(int)cueID;
+- (int)numberOfAccounts;
+- (void)deleteCueAndRemoveFromSharingSets:(Cue *)cue;
+- (int)numberOfSharingSets;
+- (NSMutableArray *)getAvailableSharingSetIDs;
+- (void)deleteAccountsWithCueID:(Cue *)cue;
+- (void)deleteSharingSetByAccount:(Account *)account;
 
 @end

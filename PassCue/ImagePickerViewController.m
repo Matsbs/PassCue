@@ -25,7 +25,7 @@
     self.title = self.titleString;
 
     self.selectedBackgroundImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 80, screenWidth-100, 150)];
-    [self.selectedBackgroundImage.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
+    [self.selectedBackgroundImage.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
     [self.selectedBackgroundImage.layer setBorderWidth: 2.0];
     [self.view addSubview:self.selectedBackgroundImage];
     
@@ -36,7 +36,7 @@
     [self.view addSubview:selectBackgroundButton];
     
     self.selectedPersonImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 280, screenWidth-100, 150)];
-    [self.selectedPersonImage.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
+    [self.selectedPersonImage.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
     [self.selectedPersonImage.layer setBorderWidth: 2.0];
     [self.view addSubview:self.selectedPersonImage];
     
