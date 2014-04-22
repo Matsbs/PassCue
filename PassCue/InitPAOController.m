@@ -59,29 +59,31 @@
     [self.imageView.layer setBorderWidth: 2.0];
     [self.view addSubview:self.imageView];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.action.image_path]];
-    self.imageView.frame = CGRectMake(10, 255, 145, 120);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
-    
-    self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 385, 145, 20)];
-    self.actionLabel.textColor = [UIColor darkGrayColor];
-    self.actionLabel.text = self.action.name;
-    self.actionLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:self.actionLabel];
-    
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.object.image_path]];
-    self.imageView.frame = CGRectMake(165, 255, 145, 120);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
-    
-    self.objectLabel = [[UILabel alloc] initWithFrame:CGRectMake(165, 385, 145, 20)];
-    self.objectLabel.textColor = [UIColor darkGrayColor];
-    self.objectLabel.text = self.object.name;
-    self.objectLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:self.objectLabel];
+    if (self.association.associationID > 0) {
+        self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.action.image_path]];
+        self.imageView.frame = CGRectMake(10, 255, 145, 120);
+        [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+        [self.imageView.layer setBorderWidth: 2.0];
+        [self.view addSubview:self.imageView];
+        
+        self.actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 385, 145, 20)];
+        self.actionLabel.textColor = [UIColor darkGrayColor];
+        self.actionLabel.text = self.action.name;
+        self.actionLabel.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:self.actionLabel];
+        
+        self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.object.image_path]];
+        self.imageView.frame = CGRectMake(165, 255, 145, 120);
+        [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+        [self.imageView.layer setBorderWidth: 2.0];
+        [self.view addSubview:self.imageView];
+        
+        self.objectLabel = [[UILabel alloc] initWithFrame:CGRectMake(165, 385, 145, 20)];
+        self.objectLabel.textColor = [UIColor darkGrayColor];
+        self.objectLabel.text = self.object.name;
+        self.objectLabel.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:self.objectLabel];
+    }
     
     if (self.paoNr == 1) {
         [self.navigationItem setHidesBackButton:YES];
@@ -112,7 +114,7 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
     if (buttonIndex == 1){
         //remove associations
-        //[self removeAssociations];
+        [self removeAssociations];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }

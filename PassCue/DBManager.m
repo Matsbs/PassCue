@@ -47,7 +47,7 @@
     if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
         NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
     }
-    sql_stmt ="CREATE TABLE IF NOT EXISTS SHARING_SETS (ID INTEGER PRIMARY KEY AUTOINCREMENT, CUE1 INTEGER, CUE2 INTEGER, CUE3 INTEGER, CUE4 INTEGER, FOREIGN KEY (CUE1) REFERENCES CUES(ID), FOREIGN KEY (CUE2) REFERENCES CUES(ID), FOREIGN KEY (CUE3) REFERENCES CUES(ID), FOREIGN KEY (CUE4) REFERENCES CUES(ID) )";
+    sql_stmt ="CREATE TABLE IF NOT EXISTS SHARING_SETS (ID INTEGER PRIMARY KEY AUTOINCREMENT, CUE1 INTEGER, CUE2 INTEGER, CUE3 INTEGER, CUE4 INTEGER, AVAILABLE BOOL, FOREIGN KEY (CUE1) REFERENCES CUES(ID), FOREIGN KEY (CUE2) REFERENCES CUES(ID), FOREIGN KEY (CUE3) REFERENCES CUES(ID), FOREIGN KEY (CUE4) REFERENCES CUES(ID) )";
     if (sqlite3_exec(_PassCueDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
         NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
     }
@@ -150,7 +150,7 @@
 
 - (int)insertSharingSet:(SharingSet *)sharingSet{
     sqlite3_stmt *statement;
-    NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO SHARING_SETS (CUE1, CUE2, CUE3, CUE4) VALUES (\"%d\", \"%d\", \"%d\", \"%d\")", sharingSet.cue1ID, sharingSet.cue2ID, sharingSet.cue3ID, sharingSet.cue4ID];
+    NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO SHARING_SETS (CUE1, CUE2, CUE3, CUE4, AVAILABLE) VALUES (\"%d\", \"%d\", \"%d\", \"%d\", \"%d\")", sharingSet.cue1ID, sharingSet.cue2ID, sharingSet.cue3ID, sharingSet.cue4ID, sharingSet.available];
     const char *insert_stmt = [insertSQL UTF8String];
     sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
     if (sqlite3_step(statement) == SQLITE_DONE){
@@ -500,6 +500,15 @@
         NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
     }
     sqlite3_reset(statement);
+    insertSQL = [NSString stringWithFormat:@"UPDATE SHARING_SETS SET AVAILABLE = \"%d\" WHERE ID = \"%d\"", 0, sharingID];
+    insert_stmt = [insertSQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+    if (sqlite3_step(statement) == SQLITE_DONE){
+        NSLog(@"Sharing set is not available.");
+    }else{
+        NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+    }
+    sqlite3_reset(statement);
     sqlite3_finalize(statement);
 }
 
@@ -617,13 +626,56 @@
     return sharingSetIDs;
 }
 
-- (void)deleteSharingSetByAccount:(Account *)account{
+- (void)setSharingSetAvailableByAccount:(Account *)account{
     sqlite3_stmt *statement;
-    NSString *insertSQL = [NSString stringWithFormat:@"DELETE FROM SHARING_SETS WHERE ID = \"%d\"", account.sharingSetID];
+    NSString *insertSQL = [NSString stringWithFormat:@"UPDATE SHARING_SETS SET AVAILABLE = \"%d\" WHERE ID = \"%d\"", 1, account.sharingSetID];
     const char *insert_stmt = [insertSQL UTF8String];
     sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
     if (sqlite3_step(statement) == SQLITE_DONE){
-        NSLog(@"Sharing set deleted.");
+        NSLog(@"Sharing set is available.");
+    }else{
+        NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+}
+
+- (bool)sharingSetAvailable:(int)sharingSetID{
+    bool isAvailable = NO;
+    sqlite3_stmt *statement;
+    NSString *querySQL = [NSString stringWithFormat:@"SELECT AVAILABLE FROM SHARING_SETS WHERE ID = \"%d\"",sharingSetID];
+    const char *query_stmt = [querySQL UTF8String];
+    if (sqlite3_prepare_v2(_PassCueDB,query_stmt, -1, &statement, NULL) == SQLITE_OK){
+        if (sqlite3_step(statement) == SQLITE_ROW){
+           isAvailable = sqlite3_column_int(statement, 0);
+        }
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+    return isAvailable;
+}
+
+- (void)resetRehearsalScheduleByID:(int)rehearsalScheduleID{
+    sqlite3_stmt *statement;
+    NSString *insertSQL = [NSString stringWithFormat:@"UPDATE REHEARSAL_SCHEDULES SET I = \"%d\"  WHERE ID = \"%d\"", 0, rehearsalScheduleID];
+    const char *insert_stmt = [insertSQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+    if (sqlite3_step(statement) == SQLITE_DONE){
+        NSLog(@"Rehearsal Schedule reset.");
+    }else{
+        NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
+    }
+    sqlite3_reset(statement);
+    sqlite3_finalize(statement);
+}
+
+- (void)setAssociationIDForCueID:(int)cueID : (int)associationID{
+    sqlite3_stmt *statement;
+    NSString *insertSQL = [NSString stringWithFormat:@"UPDATE CUES SET ASSOCIATION = \"%d\"  WHERE ID = \"%d\"", associationID, cueID];
+    const char *insert_stmt = [insertSQL UTF8String];
+    sqlite3_prepare_v2(_PassCueDB, insert_stmt,-1, &statement, NULL);
+    if (sqlite3_step(statement) == SQLITE_DONE){
+        NSLog(@"AssociationID updated for cue.");
     }else{
         NSLog(@"%s",sqlite3_errmsg(_PassCueDB));
     }

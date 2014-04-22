@@ -48,11 +48,18 @@
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
     newAccount.notes = self.notesTextField.text;
-    int numberOfActiveAccounts = [[self.dbManager getAllAccounts]count];
+    //int numberOfActiveAccounts = [[self.dbManager getAllAccounts]count];
     newAccount.accountID = [self.dbManager insertAccount:newAccount];
     //Find available sharing set id
-    NSMutableArray *availableSharingSetIDs = [self.dbManager getAvailableSharingSetIDs];
-    newAccount.sharingSetID =[[availableSharingSetIDs objectAtIndex:numberOfActiveAccounts]intValue];
+    for (int i = 1; i < 127; i++) {
+        if ([self.dbManager sharingSetAvailable:i]) {
+            newAccount.sharingSetID = i;
+            break;
+        }
+    }
+    
+    //NSMutableArray *availableSharingSetIDs = [self.dbManager getAvailableSharingSetIDs];
+    //newAccount.sharingSetID =[[availableSharingSetIDs objectAtIndex:numberOfActiveAccounts]intValue];
     [self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.sharingSetID];
     NSLog(@"Sharing Set id %d",newAccount.sharingSetID);
     //[self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.accountID];

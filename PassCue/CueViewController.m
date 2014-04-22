@@ -45,15 +45,23 @@
     [self.personImage.layer setBorderWidth: 2.0];
     [self.view addSubview:self.personImage];
     
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 220, screenWidth, screenHeight) style:UITableViewStyleGrouped];
-    self.tableView.rowHeight = 50;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.sectionHeaderHeight = 0.0;
-    self.tableView.sectionFooterHeight = 0.0;
-    self.tableView.scrollEnabled = YES;
-    self.tableView.backgroundView = nil;
-    [self.view addSubview:self.tableView];
+    if (self.accounts.count > 0) {
+        self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 220, screenWidth, screenHeight-220) style:UITableViewStyleGrouped];
+        self.tableView.rowHeight = 50;
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.sectionHeaderHeight = 0.0;
+        self.tableView.sectionFooterHeight = 0.0;
+        self.tableView.scrollEnabled = YES;
+        self.tableView.backgroundView = nil;
+        [self.view addSubview:self.tableView];
+    }else{
+        self.notUsedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 250, screenWidth, 20)];
+        self.notUsedLabel.textColor = [UIColor darkGrayColor];
+        self.notUsedLabel.text = @"Cue is not used";
+        self.notUsedLabel.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:self.notUsedLabel];
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -93,14 +101,19 @@
         NSString *stringToWrite = [[dateFormatter stringFromDate:dateToWrite] capitalizedString];
         cell.textLabel.text = stringToWrite;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellEditingStyleNone;
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textAlignment = NSTextAlignmentLeft;
     }else if (indexPath.section == 1){
         self.account = [self.accounts objectAtIndex:indexPath.row];
         cell.textLabel.text = self.account.name;
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textAlignment = NSTextAlignmentLeft;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else{
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.text = @"Delete Cue";
+        cell.textLabel.text = @"Reset Cue";
         cell.textLabel.textColor = [UIColor redColor];
         cell.accessoryType = UITableViewCellEditingStyleNone;
     }
@@ -120,7 +133,7 @@
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }else if (indexPath.section == 2){
         NSString *alertTitle = [[NSString alloc] init];
-        alertTitle = [NSString stringWithFormat:@"Are you sure you want to delete this cue? All accounts with this cue will be deleted."];
+        alertTitle = [NSString stringWithFormat:@"Are you sure you want to reset this cue? All accounts with this cue will be deleted."];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:nil delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
         [alert show];
     }
@@ -128,10 +141,42 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
     if (buttonIndex == 1){
-        //delete all accounts with the cue, delete the cue and remove from sharing set, delete any not with cue id.
+        //delete all notification for cueID
+        //delete all accounts with cueID in the sharing set
+        //set all sharing set with cueID available
+        //generate association for cueID
+        
         [self deleteNotificationByCueID:self.cue.cueID];
-        [self.dbManager deleteCueAndRemoveFromSharingSets:self.cue];
         [self deleteAccountsWithCueID:self.cue];
+        [self.dbManager resetRehearsalScheduleByID:self.cue.cueID];
+        
+        //create new association, set association id in the cue.
+        
+        UInt32 randNumber = 0;
+        int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber);
+        if (result != 0) {
+            randNumber = arc4random();
+            NSLog(@"Used arc4random");
+        }
+        randNumber = (randNumber % 10)+1;
+        
+        UInt32 randNumber2 = 0;
+        int result2 = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber2);
+        if (result2 != 0) {
+            randNumber2 = arc4random();
+            NSLog(@"Used arc4random");
+        }
+        randNumber2 = (randNumber2 % 10)+1;
+        
+        Action *newAction = [self.dbManager getActionByID:randNumber];
+        Object *newObject = [self.dbManager getObjectByID:randNumber2];
+        Association *newAssociation = [[Association alloc]init];
+        newAssociation.action = newAction.name;
+        newAssociation.object = newObject.name;
+        
+        newAssociation.associationID = [self.dbManager insertAssociation:newAssociation];
+        [self.dbManager setAssociationIDForCueID:self.cue.cueID :newAssociation.associationID];
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
@@ -160,6 +205,7 @@
 
 - (void)deleteAccountsWithCueID:(Cue *)cue{
     for (Account *account in self.accounts){
+        [self.dbManager setSharingSetAvailableByAccount:account];
         [self.dbManager deleteAccount:account];
     }
 }

@@ -15,5 +15,6 @@
 @property int cue3ID;
 @property int cue4ID;
 @property int sharingSetID;
+@property bool available;
 
 @end

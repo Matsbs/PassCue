@@ -26,6 +26,7 @@
     self.tableView.rowHeight = 50;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.scrollEnabled = NO;
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 
     [self.view addSubview:self.tableView];
@@ -49,6 +50,30 @@
     if (cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
+    
+    
+//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+//    
+//    dispatch_async(queue, ^{
+//        self.cue = [self.cues objectAtIndex:indexPath.row];
+//        NSString *cueName = [[NSString alloc]initWithFormat:@"Cue %d",self.cue.cueID];
+//        cell.textLabel.text = cueName;
+//        UIImage *background = [[UIImage alloc]initWithContentsOfFile:self.cue.image_path];
+//        UIImage *person       = [[UIImage alloc]initWithContentsOfFile:self.cue.person];
+//        CGSize newSize = CGSizeMake(120, 50);
+//        UIGraphicsBeginImageContext( newSize );
+//        [background drawInRect:CGRectMake(0,5,55,40)];
+//        [person drawInRect:CGRectMake(60,5,55,40)];
+//        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+//        UIGraphicsEndImageContext();
+//
+//        dispatch_sync(dispatch_get_main_queue(), ^{
+//            UITableViewCell * correctCell = [self.tableView cellForRowAtIndexPath:indexPath];
+//            [[correctCell imageView] setImage:newImage];
+//            [correctCell setNeedsLayout];
+//        });
+//    });
+    
     self.cue = [self.cues objectAtIndex:indexPath.row];
     NSString *cueName = [[NSString alloc]initWithFormat:@"Cue %d",self.cue.cueID];
     cell.textLabel.text = cueName;

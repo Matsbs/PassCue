@@ -49,17 +49,17 @@
     self.cueLabel.textColor = [UIColor darkGrayColor];
     [self.view addSubview:self.cueLabel];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.image_path]];
-    self.imageView.frame = CGRectMake(10, 90, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView1 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.image_path]];
+    self.imageView1.frame = CGRectMake(10, 90, 145, 85);
+    [self.imageView1.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView1.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView1];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.person]];
-    self.imageView.frame = CGRectMake(165, 90, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView2 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue1.person]];
+    self.imageView2.frame = CGRectMake(165, 90, 145, 85);
+    [self.imageView2.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView2.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView2];
     
     self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 175, screenWidth, 20)];
     cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue2.cueID];
@@ -68,17 +68,17 @@
     self.cueLabel.textColor = [UIColor darkGrayColor];
     [self.view addSubview:self.cueLabel];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.image_path]];
-    self.imageView.frame = CGRectMake(10, 195, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView3 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.image_path]];
+    self.imageView3.frame = CGRectMake(10, 195, 145, 85);
+    [self.imageView3.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView3.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView3];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.person]];
-    self.imageView.frame = CGRectMake(165, 195, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView4 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue2.person]];
+    self.imageView4.frame = CGRectMake(165, 195, 145, 85);
+    [self.imageView4.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView4.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView4];
     
     self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 280, screenWidth, 20)];
     cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue3.cueID];
@@ -87,17 +87,17 @@
     self.cueLabel.textColor = [UIColor darkGrayColor];
     [self.view addSubview:self.cueLabel];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.image_path]];
-    self.imageView.frame = CGRectMake(10, 300, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView5 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.image_path]];
+    self.imageView5.frame = CGRectMake(10, 300, 145, 85);
+    [self.imageView5.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView5.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView5];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.person]];
-    self.imageView.frame = CGRectMake(165, 300, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView6 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue3.person]];
+    self.imageView6.frame = CGRectMake(165, 300, 145, 85);
+    [self.imageView6.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView6.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView6];
     
     self.cueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 385, screenWidth, 20)];
     cueName = [[NSString alloc]initWithFormat:@"Cue %d", self.cue4.cueID];
@@ -106,17 +106,17 @@
     self.cueLabel.textColor = [UIColor darkGrayColor];
     [self.view addSubview:self.cueLabel];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.image_path]];
-    self.imageView.frame = CGRectMake(10, 405, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView7 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.image_path]];
+    self.imageView7.frame = CGRectMake(10, 405, 145, 85);
+    [self.imageView7.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView7.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView7];
     
-    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.person]];
-    self.imageView.frame = CGRectMake(165, 405, 145, 85);
-    [self.imageView.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
-    [self.imageView.layer setBorderWidth: 2.0];
-    [self.view addSubview:self.imageView];
+    self.imageView8 = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:self.cue4.person]];
+    self.imageView8.frame = CGRectMake(165, 405, 145, 85);
+    [self.imageView8.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
+    [self.imageView8.layer setBorderWidth: 2.0];
+    [self.view addSubview:self.imageView8];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
     self.navigationItem.leftBarButtonItem = cancelButton;

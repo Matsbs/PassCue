@@ -54,10 +54,12 @@
 - (void)closeDB;
 - (NSMutableArray *)getAccountsByCueID:(int)cueID;
 - (int)numberOfAccounts;
-- (void)deleteCueAndRemoveFromSharingSets:(Cue *)cue;
+- (void)setSharingSetAvailableByAccount:(Account *)account;
 - (int)numberOfSharingSets;
 - (NSMutableArray *)getAvailableSharingSetIDs;
-- (void)deleteAccountsWithCueID:(Cue *)cue;
 - (void)deleteSharingSetByAccount:(Account *)account;
+- (bool)sharingSetAvailable:(int)sharingSetID;
+- (void)resetRehearsalScheduleByID:(int)rehearsalScheduleID;
+- (void)setAssociationIDForCueID:(int)cueID : (int)associationID;
 
 @end

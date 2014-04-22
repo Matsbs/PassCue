@@ -163,6 +163,7 @@
                     newSharingSet.cue2ID = j;
                     newSharingSet.cue3ID = k;
                     newSharingSet.cue4ID = l;
+                    newSharingSet.available = YES;
                     [self.dbManager insertSharingSet:newSharingSet];
                 }
             }
@@ -235,7 +236,7 @@
     if(editing == UITableViewCellEditingStyleDelete) {
         [self.dbManager deleteAccount:[self.accounts objectAtIndex:indexPath.row]];
         [self checkCuesForAccount:[self.accounts objectAtIndex:indexPath.row]];
-        [self.dbManager deleteSharingSetByAccount:[self.accounts objectAtIndex:indexPath.row]];
+        //[self.dbManager setSharingSetAvailableByAccount:[self.accounts objectAtIndex:indexPath.row]];
         [self.accounts removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         if (self.accounts.count == 0) {

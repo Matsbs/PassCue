@@ -24,7 +24,7 @@
     self.titleString = [[NSString alloc]initWithFormat:@"%@%d", @"Select Cue ", self.cueNr];
     self.title = self.titleString;
 
-    self.selectedBackgroundImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 80, screenWidth-100, 150)];
+    self.selectedBackgroundImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 100, screenWidth-100, 150)];
     [self.selectedBackgroundImage.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
     [self.selectedBackgroundImage.layer setBorderWidth: 2.0];
     [self.view addSubview:self.selectedBackgroundImage];
@@ -32,10 +32,10 @@
     UIButton *selectBackgroundButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [selectBackgroundButton addTarget:self action:@selector(selectBackgroundImage:) forControlEvents:UIControlEventTouchUpInside];
     [selectBackgroundButton setTitle:@"Select Background Image" forState:UIControlStateNormal];
-    [selectBackgroundButton setFrame:CGRectMake(80.0, 230, 180, 42.0)];
+    [selectBackgroundButton setFrame:CGRectMake(80.0, 250, 180, 42.0)];
     [self.view addSubview:selectBackgroundButton];
     
-    self.selectedPersonImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 280, screenWidth-100, 150)];
+    self.selectedPersonImage = [[UIImageView alloc] initWithFrame:CGRectMake(50, 300, screenWidth-100, 150)];
     [self.selectedPersonImage.layer setBorderColor: [[UIColor darkGrayColor] CGColor]];
     [self.selectedPersonImage.layer setBorderWidth: 2.0];
     [self.view addSubview:self.selectedPersonImage];
@@ -43,7 +43,7 @@
     UIButton *selectPersonButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [selectPersonButton addTarget:self action:@selector(selectPersonImage:) forControlEvents:UIControlEventTouchUpInside];
     [selectPersonButton setTitle:@"Select Person Image" forState:UIControlStateNormal];
-    [selectPersonButton setFrame:CGRectMake(80.0, 430, 170, 42.0)];
+    [selectPersonButton setFrame:CGRectMake(80.0, 450, 170, 42.0)];
     [self.view addSubview:selectPersonButton];
     
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(nextClicked:)] ;

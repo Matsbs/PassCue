@@ -17,7 +17,14 @@
 
 @property (nonatomic, retain) Account *account;
 @property (nonatomic, retain) DBManager *dbManager;
-@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIImageView *imageView1;
+@property (nonatomic, retain) UIImageView *imageView2;
+@property (nonatomic, retain) UIImageView *imageView3;
+@property (nonatomic, retain) UIImageView *imageView4;
+@property (nonatomic, retain) UIImageView *imageView5;
+@property (nonatomic, retain) UIImageView *imageView6;
+@property (nonatomic, retain) UIImageView *imageView7;
+@property (nonatomic, retain) UIImageView *imageView8;
 @property (nonatomic, retain) SharingSet *sharingSet;
 @property (nonatomic, retain) Cue *tempCue;
 @property (nonatomic, retain) Cue *cue1;
