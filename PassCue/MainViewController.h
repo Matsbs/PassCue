@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 18.09.13.
 //  Copyright (c) 2013 Mats Sandvoll. All rights reserved.
 //
+//  View controller header responsible for the main screen - displaying all accounts
 
 #import <UIKit/UIKit.h>
 #import "ViewAccountController.h"

@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 13.03.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  View controller responsible for the account name and notes when creating an account
 
 #import "InitAccountController.h"
 
@@ -14,6 +15,7 @@
 
 @implementation InitAccountController
 
+//  Load and display the screen
 - (void)viewDidLoad{
     [super viewDidLoad];
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -21,13 +23,10 @@
     CGFloat screenHeight = screenRect.size.height;
     self.title = @"New Account";
     self.view.backgroundColor = [UIColor whiteColor];
-    
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(nextClicked:)] ;
     self.navigationItem.rightBarButtonItem = nextButton;
-    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelClicked:)] ;
     self.navigationItem.leftBarButtonItem = cancelButton;
-    
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0,screenWidth,screenHeight) style:UITableViewStyleGrouped];
     self.tableView.rowHeight = 50;
     self.tableView.delegate = self;
@@ -36,19 +35,19 @@
     self.tableView.sectionFooterHeight = 0.0;
     self.tableView.scrollEnabled = YES;
     self.tableView.backgroundView = nil;
-    //self.tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
 }
 
+//  Cancel account creation
 - (IBAction)cancelClicked:(id)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+//  Create new account and insert to table in database
 - (IBAction)nextClicked:(id)sender {
     Account *newAccount = [[Account alloc]init];
     newAccount.name = self.accountNameTextField.text;
     newAccount.notes = self.notesTextField.text;
-    //int numberOfActiveAccounts = [[self.dbManager getAllAccounts]count];
     newAccount.accountID = [self.dbManager insertAccount:newAccount];
     //Find available sharing set id
     for (int i = 1; i < 127; i++) {
@@ -57,12 +56,8 @@
             break;
         }
     }
-    
-    //NSMutableArray *availableSharingSetIDs = [self.dbManager getAvailableSharingSetIDs];
-    //newAccount.sharingSetID =[[availableSharingSetIDs objectAtIndex:numberOfActiveAccounts]intValue];
     [self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.sharingSetID];
     NSLog(@"Sharing Set id %d",newAccount.sharingSetID);
-    //[self.dbManager setSharingIDByAccountID:newAccount.accountID :newAccount.accountID];
     InitPAOController *paoView = [[InitPAOController alloc]init];
     paoView.paoNr = 1;
     paoView.accountID = newAccount.accountID;
@@ -71,14 +66,13 @@
     [self.navigationController pushViewController:paoView animated:YES];
 }
 
+//  Table functions
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
 }
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -102,11 +96,9 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
-
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return @"Account Name";
@@ -115,11 +107,11 @@
     }
 }
 
+//  Text field functions
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [self.accountNameTextField resignFirstResponder];
     [self.notesTextField resignFirstResponder];
     return YES;
 }
-
 
 @end

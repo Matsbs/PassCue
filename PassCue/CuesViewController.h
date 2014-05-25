@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 03.04.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  View controller header responsible for displaying and controlling all the cues in the cues screen
 
 #import <UIKit/UIKit.h>
 #import "DBManager.h"

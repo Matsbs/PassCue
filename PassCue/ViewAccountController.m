@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 11.10.13.
 //  Copyright (c) 2013 Mats Sandvoll. All rights reserved.
 //
+//  View controller responsible for the displaying the cue pictures for each account
 
 #import "ViewAccountController.h"
 
@@ -14,14 +15,13 @@
 
 @implementation ViewAccountController
 
-- (void)viewDidLoad
-{
+//  Load all account cue pictures from database and diplay the cues and the account notes
+- (void)viewDidLoad{
     [super viewDidLoad];
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGFloat screenHeight = screenRect.size.height;
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    
     
     self.account = [self.dbManager getAccountByID:self.accountID];
     self.sharingSet = [self.dbManager getSharingSetByID:self.account.sharingSetID];
@@ -123,37 +123,21 @@
     
     UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"LogedIn" style:UIBarButtonItemStyleDone target:self action:@selector(loginClicked:)] ;
     self.navigationItem.rightBarButtonItem = loginButton;
-    
-    //For testing notifications
-    UILocalNotification *localNotification = [[UILocalNotification alloc]init];
-    NSMutableDictionary *infoDict = [NSMutableDictionary dictionaryWithObject:@"value" forKey:@"fireTime"];
-    [infoDict setValue:@"new value" forKey:@"fireTime"];
-    localNotification.userInfo = infoDict;
-    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow: 10];
-    localNotification.alertBody = @"You must practise cue 1";
-    localNotification.soundName = UILocalNotificationDefaultSoundName;
-    localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    localNotification.applicationIconBadgeNumber = 1;
-    NSLog(@"number %ld", (long)localNotification.applicationIconBadgeNumber);
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    //
 }
 
+//  Table functions
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
 }
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-//    Get notes to account
     CGRect cellRect = [cell bounds];
     CGFloat cellWidth = cellRect.size.width;
     CGFloat cellHeight = cellRect.size.height;
@@ -161,15 +145,14 @@
     cell.selectionStyle = UITableViewCellAccessoryNone;
     return cell;
 }
-
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     return @"Notes";
 }
 
+// Cancel - move to main screen
 - (IBAction)cancelClicked:(id)sender {
     if (self.fromCueView) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -178,6 +161,7 @@
     }
 }
 
+// Log in performed, update rehearsal schedule for all cues and update notifications
 - (IBAction)loginClicked:(id)sender{
     for (int i = 1; i <= 4; i++) {
         if (i == 1) {
@@ -205,7 +189,6 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
-
 - (void)scheduleNotification:(Cue *)cue{
     NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",cue.cueID];

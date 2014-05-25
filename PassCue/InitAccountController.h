@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 13.03.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  View controller header responsible for the account name and notes when creating an account
 
 #import <UIKit/UIKit.h>
 #import "Account.h"
@@ -12,8 +13,6 @@
 #import "InitPAOController.h"
 
 @class InitAccountController;
-
-//Remove delegates?
 
 @protocol InitAccountControllerDelegate <NSObject>
 - (void)reloadTableData:(InitAccountController *)controller;

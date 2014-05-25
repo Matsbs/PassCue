@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 18.09.13.
 //  Copyright (c) 2013 Mats Sandvoll. All rights reserved.
 //
+//  View controller responsible for the main screen - displaying all accounts
 
 #import "MainViewController.h"
 
@@ -14,8 +15,8 @@
 
 @implementation MainViewController
 
-- (void)viewDidLoad
-{
+//  Load and display main screen table. Check if initialization has been performed
+- (void)viewDidLoad{
     [super viewDidLoad];
     //Check if first run of app
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -59,7 +60,6 @@
     }
     
     self.title = @"Accounts";
-    
     self.accounts = [self.dbManager getAllAccounts];
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) style:UITableViewStylePlain];
     self.tableView.rowHeight = 50;
@@ -75,15 +75,13 @@
     [navButtons addObject:cuesButton];
     self.navigationItem.rightBarButtonItems = navButtons;
     
-    //UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newClicked:)] ;
-    //self.navigationItem.rightBarButtonItem = newButton;
     if (self.accounts.count > 0) {
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     }
 }
-//Make delegate from cueview?
+
+//  Only display edit button if there are any accounts in the list
 -(void)viewDidAppear:(BOOL)animated{
-    //No need for delegates?
     [super viewDidAppear:animated];
     self.accounts = [self.dbManager getAllAccounts];
     if (self.accounts.count > 0) {
@@ -92,6 +90,7 @@
     [self.tableView reloadData];
 }
 
+//  Create new account if possible
 - (IBAction)newClicked:(id)sender {
     if ([self.dbManager numberOfAccounts] < [[self.dbManager getAvailableSharingSetIDs]count]) {
         InitAccountController *newAccount = [[InitAccountController alloc] init];
@@ -107,12 +106,14 @@
     }
 }
 
+//  Show the cues screen
 - (IBAction)cuesClicked:(id)sender {
     CuesViewController *cuesView = [[CuesViewController alloc] init];
     cuesView.dbManager = self.dbManager;
     [self.navigationController pushViewController:cuesView animated:YES];
 }
 
+//  Initialize the associations using random numbers
 - (void)initAssociations{
     for (int i = 0; i < 10; i++) {
         UInt32 randNumber = 0;
@@ -131,6 +132,7 @@
     }
 }
 
+//  Initialize the actions table in database
 - (void)initActionDB{
     NSArray * imagePaths = [[[NSBundle mainBundle] pathsForResourcesOfType: @"jpg" inDirectory: @"actions"] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
     for (NSString * imagePath in imagePaths) {
@@ -141,6 +143,7 @@
     }
 }
 
+//  Initialize the objects table in database
 - (void)initObjectDB{
     NSArray * imagePaths = [[[NSBundle mainBundle] pathsForResourcesOfType: @"jpg" inDirectory: @"objects"] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
     for (NSString * imagePath in imagePaths) {
@@ -151,8 +154,10 @@
     }
 }
 
+//  Generate the sharing set
 - (void)generateSharingSet{
-    int i,j,k,l;
+    int i,j,k,l,count;
+    count = 1;
     int length = 10;
     for (i = 1; i < length-3; i++) {
         for (j = i+1; j < length-2; j++) {
@@ -165,12 +170,15 @@
                     newSharingSet.cue4ID = l;
                     newSharingSet.available = YES;
                     [self.dbManager insertSharingSet:newSharingSet];
+                    NSLog(@"Account %d: %d %d %d %d", count, i, j, k, l);
+                    count++;
                 }
             }
         }
     }
 }
 
+//  Initialize the rehearsal schedule
 - (void)initRehearsalSchedule{
     for (int i = 1; i < 10; i++) {
         RehearsalSchedule *newRS = [[RehearsalSchedule alloc]init];
@@ -179,6 +187,7 @@
     }
 }
 
+//  Update the edit button
 - (void)reloadTableData:(InitAccountController *)controller{
     self.accounts = [self.dbManager getAllAccounts];
     if (self.accounts.count > 0) {
@@ -187,16 +196,14 @@
     [self.tableView reloadData];
 }
 
-//Table functions
+//  Table functions
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = self.accounts.count;
     return count;
 }
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -208,7 +215,6 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
-
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.account = [self.accounts objectAtIndex:indexPath.row];
@@ -219,18 +225,15 @@
         [self.navigationController pushViewController:viewAccount animated:YES];
     }
 }
-
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewCellEditingStyleDelete;
 }
-
 -(void)setEditing:(BOOL)editing animated:(BOOL) animated {
     if (editing != self.editing) {
         [super setEditing:editing animated:animated];
         [self.tableView setEditing:editing animated:animated];
     }
 }
-
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle) editing
  forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(editing == UITableViewCellEditingStyleDelete) {
@@ -245,6 +248,7 @@
     }
 }
 
+//  Delete notifications for a cue if the cue is not used
 - (void)checkCuesForAccount:(Account *)account{
     SharingSet *sharingSet = [self.dbManager getSharingSetByID:account.sharingSetID];
     Cue *cue1 = [self.dbManager getCueByID:sharingSet.cue1ID];
@@ -264,7 +268,6 @@
         [self deleteNotificationByCueID:cue4.cueID];
     }
 }
-        
 - (void)deleteNotificationByCueID:(int)cueID{
     NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",cueID];

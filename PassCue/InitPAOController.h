@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 19.03.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  View controller header responsible for initializing the PAO stories and display them to the user
 
 #import <UIKit/UIKit.h>
 #import "Cue.h"

@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 03.04.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  View controller header responsible for the cue information screen
 
 #import "CueViewController.h"
 
@@ -14,10 +15,8 @@
 
 @implementation CueViewController
 
-
-
-- (void)viewDidLoad
-{
+//  Load screen and display table
+- (void)viewDidLoad{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -64,16 +63,17 @@
     }
 }
 
+//  Update the rehearsal schedule after a log in
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     self.rehearsalSchedule = [self.dbManager getRehearsalScheduleByID:self.cue.cueID];
     [self.tableView reloadData];
 }
 
+//  Table functions
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 1;
@@ -83,7 +83,6 @@
         return 1;
     }
 }
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -120,8 +119,7 @@
     
     return cell;
 }
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
         self.account = [self.accounts objectAtIndex:indexPath.row];
@@ -138,50 +136,6 @@
         [alert show];
     }
 }
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
-    if (buttonIndex == 1){
-        //delete all notification for cueID
-        //delete all accounts with cueID in the sharing set
-        //set all sharing set with cueID available
-        //generate association for cueID
-        
-        [self deleteNotificationByCueID:self.cue.cueID];
-        [self deleteAccountsWithCueID:self.cue];
-        [self.dbManager resetRehearsalScheduleByID:self.cue.cueID];
-        
-        //create new association, set association id in the cue.
-        
-        UInt32 randNumber = 0;
-        int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber);
-        if (result != 0) {
-            randNumber = arc4random();
-            NSLog(@"Used arc4random");
-        }
-        randNumber = (randNumber % 10)+1;
-        
-        UInt32 randNumber2 = 0;
-        int result2 = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber2);
-        if (result2 != 0) {
-            randNumber2 = arc4random();
-            NSLog(@"Used arc4random");
-        }
-        randNumber2 = (randNumber2 % 10)+1;
-        
-        Action *newAction = [self.dbManager getActionByID:randNumber];
-        Object *newObject = [self.dbManager getObjectByID:randNumber2];
-        Association *newAssociation = [[Association alloc]init];
-        newAssociation.action = newAction.name;
-        newAssociation.object = newObject.name;
-        
-        newAssociation.associationID = [self.dbManager insertAssociation:newAssociation];
-        [self.dbManager setAssociationIDForCueID:self.cue.cueID :newAssociation.associationID];
-        
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-}
-
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return @"Next Rehearsal";
@@ -192,6 +146,40 @@
     }
 }
 
+//  Alert view function - create new association when cue is reset
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
+    if (buttonIndex == 1){
+        //  Delete notifications and accounts for the cue and reset rehearsal schedule
+        [self deleteNotificationByCueID:self.cue.cueID];
+        [self deleteAccountsWithCueID:self.cue];
+        [self.dbManager resetRehearsalScheduleByID:self.cue.cueID];
+        //create new association, set association id for the cue.
+        UInt32 randNumber = 0;
+        int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber);
+        if (result != 0) {
+            randNumber = arc4random();
+            NSLog(@"Used arc4random");
+        }
+        randNumber = (randNumber % 10)+1;
+        UInt32 randNumber2 = 0;
+        int result2 = SecRandomCopyBytes(kSecRandomDefault, sizeof(int), (uint8_t*)&randNumber2);
+        if (result2 != 0) {
+            randNumber2 = arc4random();
+            NSLog(@"Used arc4random");
+        }
+        randNumber2 = (randNumber2 % 10)+1;
+        Action *newAction = [self.dbManager getActionByID:randNumber];
+        Object *newObject = [self.dbManager getObjectByID:randNumber2];
+        Association *newAssociation = [[Association alloc]init];
+        newAssociation.action = newAction.name;
+        newAssociation.object = newObject.name;
+        newAssociation.associationID = [self.dbManager insertAssociation:newAssociation];
+        [self.dbManager setAssociationIDForCueID:self.cue.cueID :newAssociation.associationID];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+//  Delete notifications and accounts associated with a cue
 - (void)deleteNotificationByCueID:(int)cueID{
     NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",cueID];
@@ -202,38 +190,11 @@
     }
     NSLog(@"Deleted notification for cue %d", cueID);
 }
-
 - (void)deleteAccountsWithCueID:(Cue *)cue{
     for (Account *account in self.accounts){
         [self.dbManager setSharingSetAvailableByAccount:account];
         [self.dbManager deleteAccount:account];
     }
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

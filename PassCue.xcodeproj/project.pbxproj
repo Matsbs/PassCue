@@ -25,7 +25,6 @@
 		4E5F9E5518D1B17E001A4FD2 /* PassCueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E5418D1B17E001A4FD2 /* PassCueTests.m */; };
 		4E5F9E7918D1B57D001A4FD2 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E6E18D1B57D001A4FD2 /* DBManager.m */; };
 		4E5F9E7A18D1B57D001A4FD2 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E7018D1B57D001A4FD2 /* MainViewController.m */; };
-		4E5F9E7D18D1B57D001A4FD2 /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E7618D1B57D001A4FD2 /* Task.m */; };
 		4E5F9E7E18D1B57D001A4FD2 /* ViewAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E7818D1B57D001A4FD2 /* ViewAccountController.m */; };
 		4E5F9E8018D1B603001A4FD2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */; };
 		4E5F9E8318D1B82E001A4FD2 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5F9E8218D1B82E001A4FD2 /* Account.m */; };
@@ -82,8 +81,6 @@
 		4E5F9E6E18D1B57D001A4FD2 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
 		4E5F9E6F18D1B57D001A4FD2 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		4E5F9E7018D1B57D001A4FD2 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		4E5F9E7518D1B57D001A4FD2 /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
-		4E5F9E7618D1B57D001A4FD2 /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
 		4E5F9E7718D1B57D001A4FD2 /* ViewAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAccountController.h; sourceTree = "<group>"; };
 		4E5F9E7818D1B57D001A4FD2 /* ViewAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewAccountController.m; sourceTree = "<group>"; };
 		4E5F9E7F18D1B603001A4FD2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
@@ -190,12 +187,10 @@
 				4E6141C518E95281007D26BD /* RehearsalSchedule.m */,
 				4E64C85818D6F8E000B52495 /* SharingSet.h */,
 				4E64C85918D6F8E000B52495 /* SharingSet.m */,
-				4E5F9E7518D1B57D001A4FD2 /* Task.h */,
-				4E5F9E7618D1B57D001A4FD2 /* Task.m */,
 				4E21B3ED18EDAE3800527CA7 /* CueViewController.h */,
 				4E21B3EE18EDAE3800527CA7 /* CueViewController.m */,
-				4E21B3EB18ED92C800527CA7 /* CuesViewController.m */,
 				4E21B3EA18ED92C800527CA7 /* CuesViewController.h */,
+				4E21B3EB18ED92C800527CA7 /* CuesViewController.m */,
 				4ECD12FE18D9DB0D00E7AD33 /* ImagePickerViewController.h */,
 				4ECD12FF18D9DB0D00E7AD33 /* ImagePickerViewController.m */,
 				4E0BD3C818D1F39E00E6E545 /* InitAccountController.h */,
@@ -355,7 +350,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E5F9E8318D1B82E001A4FD2 /* Account.m in Sources */,
-				4E5F9E7D18D1B57D001A4FD2 /* Task.m in Sources */,
 				4E6141C618E95281007D26BD /* RehearsalSchedule.m in Sources */,
 				4ECD12F518D9CB0700E7AD33 /* InitPAOController.m in Sources */,
 				4E5F9E7E18D1B57D001A4FD2 /* ViewAccountController.m in Sources */,

@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 19.03.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  View controller responsible for initializing the PAO stories and display them to the user
 
 #import "InitPAOController.h"
 
@@ -14,7 +15,7 @@
 
 @implementation InitPAOController
 
-
+//  Load and dispay the screen
 - (void)viewDidLoad{
     [super viewDidLoad];
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -96,6 +97,8 @@
     self.navigationItem.rightBarButtonItem = nextButton;
     
 }
+
+//  Manage the number of cues used for each account
 - (IBAction)nextClicked:(id)sender {
     if (self.paoNr <=3) {
         InitPAOController *paoView = [[InitPAOController alloc]init];
@@ -111,18 +114,16 @@
     }
 }
 
+// Remove association after all PAO stories has been shown to the user
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex{
     if (buttonIndex == 1){
-        //remove associations
+        //Remove associations
         [self removeAssociations];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
-- (IBAction)cancelClicked:(id)sender {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
+//  Remove all associations from database
 - (void)removeAssociations{
     Cue *cue1 = [self.dbManager getCueByID:[self.dbManager getSharingSetByID:self.account.sharingSetID].cue1ID];
     int cue1ID = [self.dbManager getSharingSetByID:self.account.sharingSetID].cue1ID;
@@ -138,6 +139,7 @@
     [self.dbManager removeAssociationByCueAndCueID:cue4 :cue4ID];
 }
 
+//  Manage and update the rehearsal schedule
 - (BOOL)hasRehearsalSchedule:(Cue *)cue{
     if ([[self.dbManager getRehearsalScheduleByID:cue.rehearsalScheduleID]i] == 0) {
         return NO;
@@ -145,7 +147,6 @@
         return YES;
     }
 }
-
 - (void)manageRehearsalSchedule{
     NSDate *now = [NSDate date];
     if ([self hasRehearsalSchedule:self.cue] == YES) {
@@ -161,6 +162,7 @@
     [self scheduleNotification];
 }
 
+//  Schedule notifications according to the rehearsal schedule
 - (void)scheduleNotification{
     NSArray *allScheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     NSString *notificationCueKey = [[NSString alloc]initWithFormat:@"cue%d",self.cue.cueID];
@@ -177,14 +179,6 @@
     self.notification.alertBody = alertText;
     self.notification.timeZone = [NSTimeZone defaultTimeZone];
     [[UIApplication sharedApplication] scheduleLocalNotification:self.notification];
-    //Update RS and Not if notification fired outside this.!!
-}
-
-- (void)didReceiveMemoryWarning{
-    //Include in all files?
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    NSLog(@"Memory full!");
 }
 
 @end

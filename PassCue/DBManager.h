@@ -5,6 +5,7 @@
 //  Created by Mats Sandvoll on 01.02.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  Database manager header
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>

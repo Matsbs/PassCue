@@ -5,6 +5,8 @@
 //  Created by Mats Sandvoll on 19.03.14.
 //  Copyright (c) 2014 Mats Sandvoll. All rights reserved.
 //
+//  Image picker view controller responsible for enable photo access to the photo library
+//  Enables the user to select pictures from the photo libraray to be used as cues
 
 #import "ImagePickerViewController.h"
 
@@ -14,7 +16,7 @@
 
 @implementation ImagePickerViewController
 
-
+//  Load and display the image picker
 - (void)viewDidLoad{
     [super viewDidLoad];
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -56,32 +58,23 @@
     [self.navigationItem setHidesBackButton:YES];
 }
 
+//  Add the selected picture to the associated object
 - (IBAction)selectPersonImage:(id)sender {
     self.personImagePicker = [[UIImagePickerController alloc] init];
     self.personImagePicker.delegate = self;
     self.isPerson = YES;
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-//        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//    }else{
-//        self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//    }
     self.personImagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     [self.navigationController presentViewController:self.personImagePicker animated:YES completion:nil];
 }
-
 - (IBAction)selectBackgroundImage:(id)sender {
     self.backgroundImagePicker = [[UIImagePickerController alloc] init];
     self.backgroundImagePicker.delegate = self;
     self.isBackground = YES;
-    //    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-    //        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    //    }else{
-    //        self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    //    }
     self.backgroundImagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     [self.navigationController presentViewController:self.backgroundImagePicker animated:YES completion:nil];
 }
 
+//  Copy all pictures to the application document folder and save path
 - (IBAction)nextClicked:(id)sender {
     NSData *imagePersonData = UIImagePNGRepresentation(self.selectedPersonImage.image);
     NSData *imageBackgroundData = UIImagePNGRepresentation(self.selectedBackgroundImage.image);
@@ -121,10 +114,10 @@
     }
 }
 
+//  Image picker functions
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *) Picker {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
-
 - (void)imagePickerController:(UIImagePickerController *) Picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     if (self.isPerson) {
         self.selectedPersonImage.image = [info objectForKey:UIImagePickerControllerOriginalImage];
@@ -136,6 +129,7 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+//  Create cues using the selected pictures and random numbers
 - (void)createCues{
     NSLog(@"%@", [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys]);
     for (int i = 1; i < 10; i++) {
